@@ -1,8 +1,8 @@
 Functionaliteiten bank: (M)
 	(1) Onderlinge compatabiliteit met de andere banken.
 	(2) Geen specifieke dimensies; de bank moet compact en bruikbaar zijn
-	(3)  De uitgedraaide bon moet minstens het uitbetaalde bedrag en de tijd van afname 		weergeven.
-	(4) De kaartlezer moet via RID (?) werken.
+	(3)  De uitgedraaide bon moet minstens het uitbetaalde bedrag en de tijd van afname weergeven.
+	(4) De kaartlezer moet via RFID werken.
 	(5) Minstens twee typen biljetten moeten uitbetaald kunnen worden.
 	(6) Na drie mislukte inlogpogingen moet de pas geblokkeerd worden.
 	(7) De pas moet gedeblokkeerd kunnen worden.
@@ -12,13 +12,13 @@ Functionaliteiten bank: (M)
 	(11) De bank moet verbonden zijn aan de gemeenschappelijke server.
 	(12) De pas bevat een pincode bestaande uit 4 cijfers.
 	(13) De interface bevat snelkeuzeopties, waarvan 70 euro er minstens een van is.
-	(14) Data van de gebruiker moet worden opgeslagen, enkele vereisten zijn de hoeveelheid 	foute invoerpogingen, de rekening van de gebruiker en het opgenomen bedrag.
+	(14) Data van de gebruiker moet worden opgeslagen, enkele vereisten zijn de hoeveelheid foute invoerpogingen, de rekening van de gebruiker en het opgenomen bedrag.
 	(15) De gebruiker moet na een opname de optie hebben een bon af te laten printen.
 	(16) De bank moet toegankelijk zijn voor een brede groep van gebruikers. (speciale 	aandacht voor blinden en slechtzienden)
 	(17) De bank moet bruikbaar zijn in een algemene omgeving.
 	(18) De bank moet bruikbaar zijn ondanks nonsens-input van de gebruiker. 
 	(19) De bank moet minstens bedienbaar zijn via knoppen.
-	(20) Er moet worden ingehaakt op hippe marketing zoals AI of steun voor goede doelen.
+	(20) Er moet worden ingehaakt op hippe marketing zoals AI of/ en er moet steun zijn voor goede doelen.
 
 Potentiele functies: (S,C)
 
@@ -29,7 +29,7 @@ Potentiele functies: (S,C)
 	Pincode wijzigen.
 	Extra validatie voor geldopnamen.
 	Eigen valuta maken.
-	Fancy art deco exterieur.
+	Gelikt exterieur.
 	
 
 Onwaarschijnlijke functies: (W)
