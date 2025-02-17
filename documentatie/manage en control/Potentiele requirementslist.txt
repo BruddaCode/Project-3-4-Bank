@@ -1,0 +1,39 @@
+Functionaliteiten bank: (M)
+	(1) Onderlinge compatabiliteit met de andere banken.
+	(2) Geen specifieke dimensies; de bank moet compact en bruikbaar zijn
+	(3)  De uitgedraaide bon moet minstens het uitbetaalde bedrag en de tijd van afname 		weergeven.
+	(4) De kaartlezer moet via RID (?) werken.
+	(5) Minstens twee typen biljetten moeten uitbetaald kunnen worden.
+	(6) Na drie mislukte inlogpogingen moet de pas geblokkeerd worden.
+	(7) De pas moet gedeblokkeerd kunnen worden.
+	(8) De bank moet een eigen naam en vestigingslocatie hebben.
+	(9) De gebruiker moet het saldo kunnen bekijken.
+	(10) Er moeten verschillende opties zijn voor de verhoudingen van de type biljetten.
+	(11) De bank moet verbonden zijn aan de gemeenschappelijke server.
+	(12) De pas bevat een pincode bestaande uit 4 cijfers.
+	(13) De interface bevat snelkeuzeopties, waarvan 70 euro er minstens een van is.
+	(14) Data van de gebruiker moet worden opgeslagen, enkele vereisten zijn de hoeveelheid 	foute invoerpogingen, de rekening van de gebruiker en het opgenomen bedrag.
+	(15) De gebruiker moet na een opname de optie hebben een bon af te laten printen.
+	(16) De bank moet toegankelijk zijn voor een brede groep van gebruikers. (speciale 	aandacht voor blinden en slechtzienden)
+	(17) De bank moet bruikbaar zijn in een algemene omgeving.
+	(18) De bank moet bruikbaar zijn ondanks nonsens-input van de gebruiker. 
+	(19) De bank moet minstens bedienbaar zijn via knoppen.
+	(20) Er moet worden ingehaakt op hippe marketing zoals AI of steun voor goede doelen.
+
+Potentiele functies: (S,C)
+
+	Interface: Touchscreen en/of text to speech.
+	De gebruiker kan zelf geld storten.
+	Maximale limiet voor opnemen geld.
+	Geld overmaken naar een andere rekening.
+	Pincode wijzigen.
+	Extra validatie voor geldopnamen.
+	Eigen valuta maken.
+	Fancy art deco exterieur.
+	
+
+Onwaarschijnlijke functies: (W)
+
+	Crypto
+	AI
+
