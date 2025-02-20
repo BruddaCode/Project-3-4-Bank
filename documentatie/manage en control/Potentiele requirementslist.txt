@@ -1,37 +1,70 @@
 Functionaliteiten bank: (M)
-	(1) Onderlinge compatabiliteit met de andere banken.
-	(2) Geen specifieke dimensies; de bank moet compact en bruikbaar zijn
-	(3)  De uitgedraaide bon moet minstens het uitbetaalde bedrag en de tijd van afname weergeven.
-	(4) De kaartlezer moet via RFID werken.
-	(5) Minstens twee typen biljetten moeten uitbetaald kunnen worden.
-	(6) Na drie mislukte inlogpogingen moet de pas geblokkeerd worden.
-	(7) De pas moet gedeblokkeerd kunnen worden.
-	(8) De bank moet een eigen naam en vestigingslocatie hebben.
-	(9) De gebruiker moet het saldo kunnen bekijken.
-	(10) Er moeten verschillende opties zijn voor de verhoudingen van de type biljetten.
-	(11) De bank moet verbonden zijn aan de gemeenschappelijke server.
-	(12) De pas bevat een pincode bestaande uit 4 cijfers.
-	(13) De interface bevat snelkeuzeopties, waarvan 70 euro er minstens een van is.
-	(14) Data van de gebruiker moet worden opgeslagen, enkele vereisten zijn de hoeveelheid foute invoerpogingen, de rekening van de gebruiker en het opgenomen bedrag.
-	(15) De gebruiker moet na een opname de optie hebben een bon af te laten printen.
-	(16) De bank moet toegankelijk zijn voor een brede groep van gebruikers. (speciale aandacht voor blinden en slechtzienden)
-	(17) De bank moet bruikbaar zijn in een algemene omgeving.
-	(18) De bank moet minstens bedienbaar zijn via knoppen.
+
+BANK VERBINDING
++=(1) Onderlinge compatabiliteit met de andere banken.
++=(2) De bank moet verbonden zijn aan de gemeenschappelijke server.
+
+EIGENSCHAPPEN BANK:
+=x(3) De bank moet een eigen naam en vestigingslocatie hebben.
+=x(4) Geen specifieke dimensies; de bank moet compact en bruikbaar zijn
+=+(5) De bank moet bruikbaar zijn in een algemene omgeving.
+
+BONPRINTEN:
+=+(6) De gebruiker moet na een opname de optie hebben een bon af te laten printen.
+=(7) De uitgedraaide bon moet minstens het uitbetaalde bedrag en de tijd van afname weergeven.
+
+KAARTLEZER EN PINPAS:
+=+(8) De kaartlezer moet via RFID werken.
++=(9) De pas moet gedeblokkeerd kunnen worden na 3 foutieve invoeringen.
++=(10) De pas bevat een pincode bestaande uit 4 cijfers.
+
+
+PINAUTOMAAT:
+=(11)Pinautomaat heeft een display screen
+=(12) De gebruiker moet het saldo kunnen bekijken.
+=(13) De bank moet minstens bedienbaar zijn via knoppen.
+=(14) Minstens twee typen biljetten moeten uitbetaald kunnen worden.
+=(15) De interface bevat snelkeuzeopties, waarvan 70 euro er minstens een van is.
+=(16) Er moeten verschillende opties zijn voor de verhoudingen van de type biljetten. (kies welke biljetten voor bedrag uitgift)
+
+SYSTEEM:
+=(17)Systeem geeft aan wanneer er onderhoud bezig is.
+=(18)Systeem geeft aan wanneer biljetten niet aanwezig zijn. 
+=(19)Systeem geeft aan wanneer er error plaatsvindt
+=(20) Data van de gebruiker moet worden opgeslagen, enkele vereisten zijn de hoeveelheid foute invoerpogingen, de rekening van de gebruiker en het opgenomen bedrag.
+
+
+
+
+
+
+
+
+Should - but preferred
+
+De bank moet toegankelijk zijn voor een brede groep van gebruikers. (speciale aandacht voor blinden en slechtzienden) + speaker
+!conformatie van geld uitnamen.
+Geld overmaken naar een andere rekening.
+andere taal opties
+
 
 Potentiele functies: (S,C)
 
 	Interface: Touchscreen en/of text to speech.
-	De gebruiker kan zelf geld storten.
+	mogelijkheid tot donaties
+	MOGELIJKHEID TOT FOOI
+	Transactie kosten andere bank gebruikers vermomd als verwerkingskosten. 
+	failsafe batterij. mogelijkheid om zonder directe stroom te functioneren.
 	Maximale limiet voor opnemen geld.
-	Geld overmaken naar een andere rekening.
 	Pincode wijzigen.
 	Extra validatie voor geldopnamen.
 	Eigen valuta maken.
 	Gelikt exterieur.
-	
+	identificatie van welke kaart van welke gebruiker is.
 
 Onwaarschijnlijke functies: (W)
 
 	Crypto
 	AI
-
+	blokeren van eigen kaart
+	Geld storten
