@@ -40,7 +40,8 @@ void setup() {
 
   printer.feed(1);
 
-  printer.println("REKENINGNUMMER\t\t\tPASNUMMER");
+  //Rekeningnummer ten alle tijden deels afgeschermd houden
+  printer.println("REKENINGNUMMER\t\t\tPASNR");
   printer.println("NLxx SMPL xxxx xxxx xx\t1234");
 
   printer.feed(1);
