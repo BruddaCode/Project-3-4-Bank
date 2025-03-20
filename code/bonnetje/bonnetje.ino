@@ -19,7 +19,7 @@ void setup() {
   left();
   large();
   printer.boldOn();
-  printer.println("Rabobank");
+  printer.println("SYMPLE");
   printer.boldOff();
 
   center();
@@ -40,9 +40,12 @@ void setup() {
 
   printer.feed(1);
 
+  printer.println("REKENINGNUMMER\t\t\tPASNUMMER");
+  printer.println("NLxx SMPL xxxx xxxx xx\t1234");
+
+  printer.feed(1);
+
   printer.println("TRANSACTIE ID\t\t:\t1");
-  printer.println("PASNUMMER\t\t\t:\t1234");
-  printer.println("REKENIGNUMMER\t\t:\t1234");
 
   printer.feed(1);
 
@@ -59,7 +62,7 @@ void setup() {
   center();
   printer.println("TOT ZIENS");
 
-  printer.feed(2);
+  printer.feed(4);
 }
 
 void right(){
