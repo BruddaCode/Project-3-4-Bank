@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  web-app:
+    image: nginx
+    container_name: Mijn-Website
+    ports:
+      - '8080:80'
+
+    volumes:
+      - ./public:/usr/share/nginx/html
+    
