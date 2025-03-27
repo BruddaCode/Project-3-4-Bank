@@ -1,0 +1,76 @@
+body {
+    background-color: #7030A0;
+    background-image:
+        url('SYMPLE_logo.png');
+    background-blend-mode: overlay;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 250px;
+    background-size: 500px;
+    overflow: hidden;
+}
+
+.button1 {
+    position: fixed;
+    left: 0%;
+    top: 50%;
+    height: 10%;
+
+}
+
+.button2 {
+    position: fixed;
+    left: 0%;
+    top: 65%;
+    height: 10%;
+    width: 25%;
+
+}
+
+.button3 {
+    position: fixed;
+    left: 0%;
+    top: 80%;
+    height: 10%;
+}
+
+.button4 {
+    position: fixed;
+    right: 0%;
+    top: 50%;
+    height: 10%;
+
+}
+
+.button5 {
+    position: fixed;
+    right: 0%;
+    top: 65%;
+    height: 10%;
+}
+
+.button6 {
+    position: fixed;
+    right: 0%;
+    top: 80%;
+    height: 10%;
+}
+
+.buttonL {
+    border-left-color: #008D8A;
+
+}
+
+.buttonR {
+    border-right-color: #008D8A;
+}
+
+.buttonL,
+.buttonR {
+    color: white;
+    background-color: #008D8A;
+    border-style: solid;
+    text-align: center;
+    text-decoration: none;
+    font-size: 32px;
+}
