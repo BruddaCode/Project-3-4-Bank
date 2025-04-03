@@ -16,8 +16,8 @@ set(TS_FILES GeldOpnemen_en_GB.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
+        geldOpties.cpp
+        geldOpties.h
         mainwindow.ui
         ${TS_FILES}
 )
@@ -26,6 +26,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(GeldOpnemen
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        PinScreen.ui
+        imgs/SYMPLE_logo4.png
+        GeldOpties.ui
+        geldOptie.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET GeldOpnemen APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
