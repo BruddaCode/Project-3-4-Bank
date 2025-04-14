@@ -4,88 +4,46 @@ body {
     background-blend-mode: overlay;
     background-repeat: no-repeat;
     background-position-x: center;
-    background-position-y: -85%;
+    background-position-y: -95%;
     background-size: 500px;
+    overflow: hidden;
+}
+
+.container{
+    padding: 30px;
+}
+
+
+.side-buttons{
+    position: absolute;
+    top: 35%;
+    display: flex;
+    flex-direction: column;
+    gap: 30%;
+    width: 30%;
+    height: 30%;
+}
+
+.left-button{
+    left: -5px;
     
 }
 
-.button1 {
-    position: fixed;
-    left: 0%;
-    top: 25%;
-    height: 15%;
-    width: 25%;
-
+.right-button{
+    right: -5px;
+    
 }
 
-.button2 {
-    position: fixed;
-    left: 0%;
-    top: 50%;
-    height: 15%;
-    width: 25%;
-
-}
-
-.button3 {
-    position: fixed;
-    left: 0%;
-    top: 75%;
-    height: 15%;
-    width: 25%;
-}
-
-.button4 {
-    position: fixed;
-    right: 0%;
-    top: 25%;
-    height: 15%;
-    width: 25%;
-}
-
-.button5 {
-    position: fixed;
-    right: 0%;
-    top: 50%;
-    height: 15%;
-    width: 25%;
-}
-
-.button6 {
-    position: fixed;
-    right: 0%;
-    top: 75%;
-    height: 15%;
-    width: 25%;
-}
-
-#buttonL {
-    border-left-color: #008D8A;
-    color: white;
+.button{
+    padding: 50px 60px;
     background-color: #008D8A;
-    border-style: solid;
     border-color: black;
+    border-style: solid;
     border-width: 4px;
-    text-align: center;
-    text-decoration: none;
     font-size: 32px;
-    cursor: pointer;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-#buttonR{
-    border-right-color: #008D8A;
     color: white;
-    background-color: #008D8A;
-    border-style: solid;
-    border-color: black;
-    border-width: 4px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 32px;
     cursor: pointer;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-
+    min-width: 100px;
 }
 
 #article1{
@@ -97,10 +55,9 @@ body {
     border-width: 4px;
     position: fixed;
     top:5%;
-    left: 34%;
+    left: 33%;
     text-align: center;
-
-    padding: 5px;
+    padding: 20px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 40px;
     color: white;
@@ -110,7 +67,7 @@ body {
 
     width: 30%;
     height: 5%;
-    border-color: #7030A0;
+    border-color: transparent;
     border-style: solid;
     border-width: 3px;
     position: fixed;
