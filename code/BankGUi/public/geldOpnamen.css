@@ -1,20 +1,15 @@
 body {
     background-color: #7030A0;
-    background-image: url(img/SYMPLE_logo4.png);
+    background-image: url(img/SYMPLE_logo4a.PNG);
     background-blend-mode: overlay;
     background-repeat: no-repeat;
     background-position-x: center;
     background-position-y: -95%;
     background-size: 500px;
-    overflow: hidden;
+
 }
 
-.container{
-    padding: 30px;
-}
-
-
-.side-buttons{
+.side-buttons {
     position: absolute;
     top: 35%;
     display: flex;
@@ -24,18 +19,16 @@ body {
     height: 30%;
 }
 
-.left-button{
-    left: -5px;
-    
+.left-button {
+    left: 0px;
 }
 
-.right-button{
-    right: -5px;
-    
+.right-button {
+    right: 0px;
 }
 
-.button{
-    padding: 50px 60px;
+.button {
+    padding: 55px 65px;
     background-color: #008D8A;
     border-color: black;
     border-style: solid;
@@ -46,7 +39,7 @@ body {
     min-width: 100px;
 }
 
-#article1{
+#article1 {
     background-color: #008D8A;
     width: 30%;
     height: 25%;
@@ -54,8 +47,10 @@ body {
     border-style: solid;
     border-width: 4px;
     position: fixed;
-    top:5%;
-    left: 33%;
+    position-area: center;
+    position: absolute;
+    top: -65%;
+    display: grid;
     text-align: center;
     padding: 20px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -63,7 +58,8 @@ body {
     color: white;
 }
 
-#article2 {
+
+#pinPas {
 
     width: 30%;
     height: 5%;
@@ -73,7 +69,7 @@ body {
     position: fixed;
     top: 38%;
     left: 34%;
-    text-align:center;
+    text-align: center;
     padding-top: 4px;
     padding-right: 10px;
     padding-bottom: 2px;
