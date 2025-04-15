@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS SympleDB;
 USE SympleDB;
 
-CREATE Table klanten (
+CREATE TABLE klanten (
     id INT PRIMARY KEY AUTO_INCREMENT,
     voornaam VARCHAR(30) NOT NULL,
     achternaam VARCHAR(50) NOT NULL,
@@ -10,10 +10,18 @@ CREATE Table klanten (
     huisnummer VARCHAR(10) NOT NULL
 );
 
-CREATE Table rekeningen (
+CREATE TABLE rekeningen (
     iban VARCHAR(18) PRIMARY KEY NOT NULL,
     klantid int FOREIGN KEY REFERENCES klanten(id),
     pin int NOT NULL,
     saldo FLOAT NOT NULL,
     valuta VARCHAR(4) NOT NULL
 );
+
+CREATE TABLE transacties (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    iban VARCHAR(18) FOREIGN KEY REFERENCES rekeningen(iban),
+    bedrag float NOT NULL,
+    valuta VARCHAR(4) NOT NULL,
+    datum DATETIME NOT NULL
+)
