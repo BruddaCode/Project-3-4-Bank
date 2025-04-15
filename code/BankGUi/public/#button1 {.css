@@ -1,0 +1,79 @@
+#button1 {
+    position: fixed;
+    left: 0%;
+    top: 25%;
+    height: 15%;
+    width: 25%;
+
+}
+
+#button2 {
+    position: fixed;
+    left: 0%;
+    top: 50%;
+    height: 15%;
+    width: 25%;
+
+}
+
+#button3 {
+    position: fixed;
+    left: 0%;
+    top: 75%;
+    height: 15%;
+    width: 25%;
+}
+
+#button4 {
+    position: fixed;
+    right: 0%;
+    top: 25%;
+    height: 15%;
+    width: 25%;
+}
+
+#button5 {
+    position: fixed;
+    right: 0%;
+    top: 50%;
+    height: 15%;
+    width: 25%;
+}
+
+#button6 {
+    position: fixed;
+    right: 0%;
+    top: 75%;
+    height: 15%;
+    width: 25%;
+}
+
+#buttonR{
+    border-right-color: #008D8A;
+    color: white;
+    background-color: #008D8A;
+    border-style: solid;
+    border-color: black;
+    border-width: 4px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 32px;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+#buttonL{
+    border-left-color: #008D8A;
+    color: white;
+    background-color: #008D8A;
+    border-style: solid;
+    border-color: black;
+    border-width: 4px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 32px;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
