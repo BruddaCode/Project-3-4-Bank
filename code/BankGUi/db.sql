@@ -12,16 +12,18 @@ CREATE TABLE klanten (
 
 CREATE TABLE rekeningen (
     iban VARCHAR(18) PRIMARY KEY NOT NULL,
-    klantid int FOREIGN KEY REFERENCES klanten(id),
+    klantid int,
     pin int NOT NULL,
     saldo FLOAT NOT NULL,
-    valuta VARCHAR(4) NOT NULL
+    valuta VARCHAR(4) NOT NULL,
+    FOREIGN KEY (klantid) REFERENCES klanten(id)
 );
 
 CREATE TABLE transacties (
     id int PRIMARY KEY AUTO_INCREMENT,
-    iban VARCHAR(18) FOREIGN KEY REFERENCES rekeningen(iban),
+    iban VARCHAR(18),
     bedrag float NOT NULL,
     valuta VARCHAR(4) NOT NULL,
-    datum DATETIME NOT NULL
+    datum DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (iban) REFERENCES rekeningen(iban)
 )
