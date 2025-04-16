@@ -6,26 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="geldOpnamen.css" />
+    <script src="pagina.js" async></script>
     <title>Start</title>
 
 </head>
 
 <body>
-    <button id="buttonL" hidden class=" button1">Button 1</button>
-    <button id="buttonL" class=" button2">Rekening inzien</button>
-    <button id="buttonL" hidden class=" button3">Button 3</button>
+    <div class="conainer">
+        <div class="button-grid">
+            <div class="side-buttons left-button">
+                <button onclick="" hidden class="button">Button 1</button>
+                <button onclick=""class="button">Rekening inzien</button>
+                <button onclick="" hidden class="button">button 3</button>
+            </div>
+        
+            <div id="article1">
+                <p>Welkom </p>
+                <p>[gebruiker naam]</p>
+            </div>
 
-    <div id="article1">
-        <p>Welkom </p>
-        <p>[Gebruiker naam]:</p>
-    </div>
-    <form action="index.html">
-    <button id="buttonR" class="  button4">Sessie afbreken</button>
-    </form>
-    <form action="geldKeuze.html">
-    <button id="buttonR" class="  button5">Geld opnemen</button>
-    </form>
-    <button id="buttonR" hidden class="  button6">Button 6</button>
-
+            <div class="side-buttons right-button">
+                <button onclick="" hidden class="button">button 4</button>
+                <button onclick="window.location.href='geldKeuze.html';" class="button">Geld opnemen</button>
+                <button onclick="storeMoneyValue(70)" class="button">€70,-</button>
+            </div>
+        </div>
+    </div>    
 </body>
 </html>
