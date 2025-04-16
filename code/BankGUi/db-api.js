@@ -26,14 +26,14 @@ app.get('/api/noob/health', (req, res) => {
     res.json({status: "OK"});
 });
 
-// --- READ ONE ---
+// --- getinfo ---
 app.post('/api/noob/users/getinfo', (req, res) => {
     try {
         var iban = req.body.iban;
         var pin = req.body.pin;
     }
     catch {
-        res.json({error: "bad request"});
+        res.json({error: "bad request"}); // verander naar error code ipv json
     }
 
     // collom toevoegen om pas te blokeren
@@ -47,14 +47,14 @@ app.post('/api/noob/users/getinfo', (req, res) => {
     // res.json({data: req.body});
 });
 
-// --- UPDATE ---
-app.put('/users/:id', (req, res) => {
-    const { name, email } = req.body;
-    db.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, req.params.id], (err) => {
-        if (err) return res.status(500).json({ error: err });
-        res.json({ message: 'User updated' });
-    });
-});
+// --- withdraw ---
+// app.put('/users/:id', (req, res) => {
+//     const { name, email } = req.body;
+//     db.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, req.params.id], (err) => {
+//         if (err) return res.status(500).json({ error: err });
+//         res.json({ message: 'User updated' });
+//     });
+// });
 
 app.listen(port, () => {
     console.log(`server op poort: ${port}`);
