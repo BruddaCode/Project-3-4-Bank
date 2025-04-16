@@ -10,22 +10,10 @@
   <title>biljet optie</title>
 
   <style>
-    button.hidden{
-        visibility: hidden;
-    }
+
   </style>
   <script>
-    function displayValue(){
-        const number = localStorage.getItem('storedMoneyValue') || localStorage.getItem('storedInputMoneyValue');
-        document.getElementById('biljetValue').textContent = number;
-    }
-    window.onload = displayValue;
 
-    addEventListener('click', () =>{
-        localStorage.removeItem('storedMoneyValue');
-        localStorage.removeItem('storedInputMoneyValue');
-    
-    });
   </script>
 </head>
 
@@ -33,23 +21,31 @@
     <div class="conainer">
         <div class="button-grid">
             <div class="side-buttons left-button">
-                <button onclick="" class="button hidden">Terug</button>
-                <button onclick="window.location.href='geldKeuze.html';" class="button">terug </button>
-                <button onclick="" class="button hidden">button 3</button>
+                <button onclick="" class="button ">€10</button>
+                <button onclick="" class="button" >Reset</button>
+                <button onclick="window.location.href='geldKeuze.html';" class="button" id="terug">Terug</button>
             </div>
         
             <div id="article1">
                 <p>U heeft €
                 <span id="biljetValue"></span>
-                ingevoerd.</p>
-                <p>Welke biljetten wilt u?</p>
+                ingevoerd.
+                <br>Welke biljetten wilt u?</br></p>
+                <div class="nrInput">
+                    <input type="number" id="form-control" placeholder="10">
+                    <lable>x €10</lable>
+                    <input type="number" id="form-control" placeholder="20">
+                    <lable>x €20</lable>
+                    <input type="number" id="form-control" placeholder="50">
+                    <lable>x €50</lable>
+                  </div>
             </div>
 
 
             <div class="side-buttons right-button">
-                <button onclick="" class="button hidden">button 4</button>
+                <button onclick="" class="button ">€20</button>
+                <button onclick="" class="button">€50</button>
                 <button onclick="window.location.href='bonVraag.html';" class="button">Klaar</button>
-                <button onclick="" class="button hidden"></button>
             </div>
         </div>
     </div>    
