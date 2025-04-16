@@ -36,6 +36,8 @@ app.post('/api/noob/users/getinfo', (req, res) => {
         res.json({error: "bad request"});
     }
 
+    // collom toevoegen om pas te blokeren
+
     // check for sql-injection
     // get data from db
     // send back json
