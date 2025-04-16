@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="geldOpnamen.css" />
+  <script src="pagina.js" async></script>
+  <title>biljet optie</title>
+
+  <style>
+    button.hidden{
+        visibility: hidden;
+    }
+  </style>
+  <script>
+    function displayValue(){
+        const number = localStorage.getItem('storedMoneyValue') || localStorage.getItem('storedInputMoneyValue');
+        document.getElementById('biljetValue').textContent = number;
+    }
+    window.onload = displayValue;
+
+    addEventListener('click', () =>{
+        localStorage.removeItem('storedMoneyValue');
+        localStorage.removeItem('storedInputMoneyValue');
+    
+    });
+  </script>
+</head>
+
+<body>
+    <div class="conainer">
+        <div class="button-grid">
+            <div class="side-buttons left-button">
+                <button onclick="" class="button hidden">Terug</button>
+                <button onclick="window.location.href='geldKeuze.html';" class="button">terug </button>
+                <button onclick="" class="button hidden">button 3</button>
+            </div>
+        
+            <div id="article1">
+                <p>U heeft €
+                <span id="biljetValue"></span>
+                ingevoerd.</p>
+                <p>Welke biljetten wilt u?</p>
+            </div>
+
+
+            <div class="side-buttons right-button">
+                <button onclick="" class="button hidden">button 4</button>
+                <button onclick="window.location.href='bonVraag.html';" class="button">Klaar</button>
+                <button onclick="" class="button hidden"></button>
+            </div>
+        </div>
+    </div>    
+</body>
+</html>
