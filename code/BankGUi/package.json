@@ -2,9 +2,10 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "mysql2": "^3.14.0"
+    "mysql2": "^3.14.0",
+    "serialport": "^13.0.0"
   },
   "scripts": {
-    "start": "node ./db-api.js"
+    "start": "node db-api.js"
   }
 }
