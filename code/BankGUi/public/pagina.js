@@ -1,7 +1,7 @@
 function storeMoneyValue(amount) {
     const number = amount;
     localStorage.setItem('storedMoneyValue', number);
-    window.location.href = 'biljetOptie.html';
+    window.location.href = 'biljetVraag.html';
 }
 
 function storeInputMoneyValue() {
@@ -11,7 +11,7 @@ function storeInputMoneyValue() {
         document.getElementById('numberInput').value = "";
     } else{
     localStorage.setItem('storedInputMoneyValue', number);
-    window.location.href = 'biljetOptie.html';
+    window.location.href = 'biljetVraag.html';
     }
 }
 
@@ -27,3 +27,9 @@ function displayValue(){
     document.getElementById('biljetValue').textContent = number;
 }
 window.onload = displayValue;
+
+document.addEventListener('touchmove', function(event){
+    if (event.scale !== 1) {
+      event.preventDefault();
+    }
+  }, {passive: false });
