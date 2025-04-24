@@ -4,42 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" type="text/css" href="geldOpnamen.css" />
   <script src="pagina.js" async></script>
   <title>Home</title>
 
 </head>
 <style>
-  a:link {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-  }
-
-  a:visited {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-  }
-
-  a:hover {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-  }
-
-  a:active {
-    color: white;
-    background-color: transparent;
-    text-decoration: none;
-  }
+  input[type='text'] {
+    font-family: Verdana;
+ 
+}
 </style>
-<script>
-  window.onclick = changePage;
-  function changePage(){
-    window.location.href='home.html';
-  }</script>
+
 
   <body>
 
@@ -48,12 +25,60 @@
       <div id="article1">
         <p>Welkom bij</p>
         <p>SYMPLE</p>
-      </div>
 
-      <div id="pinPas">
+      <p>
         Scan uw pas om verder te gaan
-      </div>
+      </p>
+      <div id="popup" class="popup">
+        <div class="popup-Pin">
+            <h3>Voer uw pincode in:</h3>
+            <p id="foutMelding"></p>
+            <form action="/code/BankGUi/public/home.html" method="post">
+            <input type="password" id="pincode" style="-webkit-text-security: circle; font-size: 32px;" maxlength="4"/>
+            <button onclick="" id="okPopup" style="margin-top: 10px; padding:
+                                           15px 20px; background-color: #008D8A; font-size:32px; color: #fff; 
+                                           border: 2px; border-radius: 3px;">OK</button>
+            </form>
+        </div>
     </div>
+    </div>
+
+    <script>
+
+
+ 
+      const openPopup = document.getElementById('article1');
+      const okPopup = document.getElementById('okPopup');
+      const popup = document.getElementById('popup');
+      
+      openPopup.addEventListener('click', () => {
+          popup.style.display = 'flex';
+          document.getElementById('pincode').focus();
+      });
+      
+      okPopup.addEventListener('click', () => {
+          document.getElementById('pincode').focus();
+          popup.style.display = 'none';
+          
+      });
+      
+      window.addEventListener('click', (event) => {
+          if (event.target === popup) {
+              popup.style.display = 'none';
+          }
+      });
+      
+      document
+  .getElementById("pincode")
+  .addEventListener("keypress", function(evt)
+  {
+      if (evt.which < 48 || evt.which > 57)
+      {
+        evt.preventDefault();
+      }
+  });
+      
+          </script>
   </body>
 
 

@@ -4,45 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="geldOpnamen.css" />
     <script src="pagina.js" async></script>
     <title>GeldKeuze</title>
 
     <style>
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-        }
 
-        .popup-content {
-            color: white;
-            width: 50%;
-            height: 40%;
-            padding: 10%;
-            border-radius: 5px;
-            text-align: center;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            font-size: 40px;
-            background-color: #7030A0;
-            ;
 
-        }
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-            -webkit-text-size-adjust: 20px;
-        }
+        
     </style>
 
 </head>
@@ -68,39 +38,45 @@
 
                 <div id="popup" class="popup">
                     <div class="popup-content">
-                        <h2>Voer het eigen bedrag in:</h2>
+                        <h3>Voer het bedrag in:</h3>
+                        
                         <input type="number" id="numberInput" placeholder="Voer een tiental in"
                             style="font-size: 32px;" />
                         <button onclick="storeInputMoneyValue()" id="okPopup" style="margin-top: 10px; padding:
                                                        15px 20px; background-color: #008D8A; font-size:32px; color: #fff; 
                                                        border: 2px; border-radius: 3px;">OK</button>
-                    </div>
+                        <p id="foutMelding"></p>
+                </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+const openPopup = document.getElementById('openPopup');
+const okPopup = document.getElementById('okPopup');
+const popup = document.getElementById('popup');
 
+openPopup.addEventListener('click', () => {
+    popup.style.display = 'flex';
+    document.getElementById('numberInput').focus();
+});
 
-        const openPopup = document.getElementById('openPopup');
-        const closePopup = document.getElementById('closePopup');
-        const popup = document.getElementById('popup');
+okPopup.addEventListener('click', () => {
+    document.getElementById('numberInput').focus();
+    if (number % 10 != 0 || number == "") {
+        popup.style.display = 'flex';
+        document.getElementById('numberInput').value = "";
+    } else{
+    popup.style.display = 'none';
+    }
+});
 
-        openPopup.addEventListener('click', () => {
-            popup.style.display = 'flex';
-            document.getElementById("numberInput").focus();
-        });
-
-        okPopup.addEventListener('click', () => {
-            popup.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === popup) {
-                popup.style.display = 'none';
-            }
-        });
+window.addEventListener('click', (event) => {
+    if (event.target === popup) {
+        popup.style.display = 'none';
+    }
+});
 
 
 
