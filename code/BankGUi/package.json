@@ -6,6 +6,7 @@
     "serialport": "^13.0.0"
   },
   "scripts": {
-    "start": "node db-api.js"
+    "start": "node db-api.js",
+    "arduino": "node arduino-api.js"
   }
 }
