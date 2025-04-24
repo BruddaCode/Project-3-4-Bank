@@ -79,16 +79,6 @@ input::-webkit-outer-spin-button,
     font-size: 28px;
 }
 
-#Field1, #Field2, #Field3{
-    top: 0;
-    left: 0;
-    width: 10%;
-    height: 50%;
-    align-items: center;
-    font-size: 30px;
-    text-align: center;
-}
-
 .popup {
     display: none;
     position: fixed;

@@ -19,69 +19,27 @@
     <div class="conainer">
         <div class="button-grid">
             <div class="side-buttons left-button">
-                <button onclick="incrementNumber('Field1')" class="button ">€10</button>
-                <button onclick="clearInput()" class="button">Reset</button>
-                <button onclick="window.location.href='geldKeuze.html';" class="button" id="terug">Terug</button>
+                <button onclick="selectBiljetOption(1)" class="button" id="Field1"></button>
+                <button onclick="selectBiljetOption(3)" class="button" id="Field3"></button>
+                <button onclick="clearStoredData(); window.location.href='geldKeuze.html';" class="button" id="terug">Terug</button>
             </div>
 
             <div id="article1">
                 <p>U heeft €
                     <span id="biljetValue"></span>
                     ingevoerd.
-                    <br>Welke biljetten wilt u?
+                    <br>Welke biljet combinatie wilt u?
                 </p>
-
-                <div class="nrInput">
-                    <input type="number" id="Field1" value="0">
-                    <lable>x €10</lable>
-                    <input type="number" id="Field2" value="0">
-                    <lable>x €20</lable>
-                    <input type="number" id="Field3" value="0">
-                    <lable>x €50</lable>
-                    <p id="foutMelding"></p>
-                </div>
             </div>
 
 
             <div class="side-buttons right-button">
-                <button onclick="incrementNumber('Field2')" class="button ">€20</button>
-                <button onclick="incrementNumber('Field3')" class="button">€50</button>
-                <button onclick="checkTotal()" class="button" id="klaar">Klaar</button>
+                <button onclick="selectBiljetOption(2)" class="button" id="Field2"></button>
+                <button onclick="" class="button hidden"></button>
+                <button onclick="window.location.href='index.html';" class="button">Sessie Afbreken</button>
             </div>
         </div>
     </div>
-
-    <script>
-        function incrementNumber(FieldId) {
-                const inputField = document.getElementById(FieldId);
-                inputField.value = parseInt(inputField.value) + 1;
-            }
-            
-            function checkTotal() {
-            
-            const inputField1 = document.getElementById('Field1').value;
-            const inputField2 = document.getElementById('Field2').value;
-            const inputField3 = document.getElementById('Field3').value;
-            const targetValue = document.getElementById('biljetValue').value;
-  
-            
-            const total = (inputField1 * 10) + (inputField2 * 20) + (inputField3 * 50);
-            
-            const button = document.getElementById('klaar');
-            
-            const resultElement = document.getElementById('foutMelding');
-                if(total === targetValue){
-                    window.location.href='bonVraag.html';
-                } else {
-                    resultElement.textContent = 'De ingevoerde biljet opties komen niet overeen met het ingevoerde bedrag.';
-                
-                }
-            }
- 
-        
-
-
-    </script>
 
 </body>
 
