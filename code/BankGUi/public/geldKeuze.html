@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="geldOpnamen.css" />
     <script src="pagina.js" async></script>
     <title>GeldKeuze</title>
@@ -39,13 +39,14 @@
                 <div id="popup" class="popup">
                     <div class="popup-content">
                         <h3>Voer het bedrag in:</h3>
-                        <p id="foutMelding"></p>
+                        
                         <input type="number" id="numberInput" placeholder="Voer een tiental in"
                             style="font-size: 32px;" />
                         <button onclick="storeInputMoneyValue()" id="okPopup" style="margin-top: 10px; padding:
                                                        15px 20px; background-color: #008D8A; font-size:32px; color: #fff; 
                                                        border: 2px; border-radius: 3px;">OK</button>
-                    </div>
+                        <p id="foutMelding"></p>
+                </div>
                 </div>
             </div>
         </div>
