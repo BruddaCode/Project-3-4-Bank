@@ -1,28 +1,24 @@
 #define mp1 8
 #define mp2 9
-#define enable 7
-#define ir 10
-
+#define button 2
+int value;
 
 void setup() {
   pinMode(mp1, OUTPUT);
   pinMode(mp2, OUTPUT);
-  digitalWrite(mp2, LOW);
-  pinMode(ir, INPUT);
+  pinMode(button, INPUT);
+  Serial.begin(9600);
 }
 
 void loop() {
+  Serial.println(digitalRead(button));
 
-  bool value = digitalRead(ir);
-
-
-  if(value == 1){
+  if (digitalRead(button) == 1){
     digitalWrite(mp1, LOW);
+    delay(1800);
   }
-  
-  if(value == 0){
+  else if (value == 0){
     digitalWrite(mp1, HIGH);
   }
-
 
 }
