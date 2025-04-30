@@ -27,7 +27,7 @@ port.on('open', function() {
     });
     
     // stuurt elke seconde een bericht naar de arduino
-    // let op dat het bericht een string moet zijn, anders werkt de handel niet
+    // bericht stuurt een string terug naar de arduino, anders wordt de arduino niet blij
     setInterval(() => {port.write(msg.toString() + "\n");}, 1000);
 
 });
