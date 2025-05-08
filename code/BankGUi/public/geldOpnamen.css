@@ -149,14 +149,16 @@ input::-webkit-inner-spin-button {
     font-size: 40px;
     background-color: #7030A0;
 }
-.popup-content-afbreken .side-buttons #miniNee{
+.popup-content-afbreken #miniNee{
     left: 20.5%;
+    top:61%;
     position: absolute;
-
+    width:20%;
 }
 
 .popup-content-afbreken #miniJa {
     right: 20.5%;
+    top:61%;
     position: absolute;
-
+    width:20%;
 }
