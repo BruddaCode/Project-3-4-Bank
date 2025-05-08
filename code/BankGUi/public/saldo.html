@@ -30,22 +30,28 @@
                 </p>
             </div>
 
-
+            <div class="side-buttons right-button">
+                <button onclick="" class="button hidden">button 4</button>
+                <button onclick="" class="button" id="openAfbreken">Sessie afbreken</button>
+                <button onclick="" class="button hidden">button 6</button>
+            </div>
 
             <div id="afbreekPopup" class="popup">
                 <div class="popup-content-afbreken">
                     <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
-                    <div class="side-buttons left-button">
+                    
                         <button onclick="" class="button hidden">Button 1</button>
-                        <button onclick=" window.location.href='saldo.html';" class="button" >Nee</button>
+                        <button onclick=" window.location.href='saldo.html';" class="button" id="miniNee">Nee</button>
                         <button onclick="" class="button hidden">button 3</button>
-                    </div>
-                    <div class="side-buttons right-button">
+                    
+                    
                         <button onclick="" class="button hidden">button 4</button>
                         <button onclick="clearStoredData(); window.location.href='index.html';" class="button"
-                            >Ja</button>
+                            id="miniJa">Ja</button>
                         <button onclick="" class="button hidden">button 6</button>
-                    </div>
+                    
+
+
                 </div>
             </div>
         </div>
