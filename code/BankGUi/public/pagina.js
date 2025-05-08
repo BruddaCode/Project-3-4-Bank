@@ -30,8 +30,6 @@ function displayValue() {
     document.getElementById('biljetValue').textContent = number;
 }
 
-
-
 // Calculate Biljetten Combinations
 function calculateBiljetten() {
     const bedrag = parseInt(localStorage.getItem('storedMoneyValue') || localStorage.getItem('storedInputMoneyValue'));
@@ -55,9 +53,6 @@ function calculateBiljetten() {
     // Save JSON data to a file
 
 }
-
-
-
 
 function calculateOptie(bedrag, biljetten) {
     let result = {};
@@ -148,17 +143,19 @@ function selectBiljetOption(option) {
     window.location.href = 'bonVraag.html';
 }
 
-
-
-
-
 window.onload = () => {
     displayValue();
     recalculateBiljetten();
 };
 
-document.addEventListener('touchmove', function (event) {
-    if (event.scale !== 1) {
-        event.preventDefault();
-    }
-}, { passive: false });
+
+
+
+//popup sessie afbreken
+const openAfbreken = document.getElementById('openAfbreken');
+const afbreekPopup = document.getElementById('afbreekPopup');
+
+openAfbreken.addEventListener('click', () => {
+    afbreekPopup.style.display = 'flex';
+    numberInput.focus();
+});
