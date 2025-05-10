@@ -1,12 +1,17 @@
-version: "3.9"
+version: '3.8'
 
 services:
-  web-app:
-    image: nginx
-    container_name: Mijn-Website
-    ports:
-      - '8080:80'
-
+  php:
+    image: php:fpm
     volumes:
-      - ./public:/usr/share/nginx/html
-    
+      - ./public:/var/www/html
+
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/etc/nginx/conf.d
+      - ./public:/var/www/html
+    depends_on:
+      - php
