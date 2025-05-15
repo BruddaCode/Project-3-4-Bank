@@ -1,64 +1,35 @@
+#define ADDRESS 20
+
+#include <Keypad.h>
+#include <Wire.h>
+
+const byte ROWS = 4; 
+const byte COLS = 3;
+char hexaKeys[ROWS][COLS] = {
+  {'1', '2', '3'},
+  {'4', '5', '6'},
+  {'7', '8', '9'},
+  {'X', '0', 'K'}
+};
+byte rowPins[ROWS] = {9, 10, 11, 12};   
+byte colPins[COLS] = {4, 5, 6};   
+Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
+
+char lastKey = 0;
+
 void setup() {
-  pinMode(4, INPUT);
-  pinMode(5, INPUT);
-  pinMode(6, INPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(11, OUTPUT);
-  pinMode(12, OUTPUT);
-  digitalWrite(9, HIGH);
-  digitalWrite(10, HIGH);
-  digitalWrite(11, HIGH);
-  digitalWrite(12, HIGH);
   Serial.begin(9600);
+  Wire.begin(ADDRESS);
+  Wire.onRequest(requestEvent);
 }
 
 void loop() {
-  digitalWrite(9, LOW);
-  if(digitalRead(4) == 0){
-    Serial.println("1");
+  char customKey = customKeypad.getKey();
+  if(customKey && customKey >= '0' && customKey <= '9') {
+    lastKey = customKey;
   }
-  if(digitalRead(5) == 0){
-    Serial.println("2");
-  }
-  if(digitalRead(6) == 0){
-    Serial.println("3");
-  }
-  digitalWrite(9, HIGH);
+}
 
-  digitalWrite(10, LOW);
-  if(digitalRead(4) == 0){
-    Serial.println("4");
-  }
-  if(digitalRead(5) == 0){
-    Serial.println("5");
-  }
-  if(digitalRead(6) == 0){
-    Serial.println("6");
-  }
-  digitalWrite(10, HIGH);
-
-  digitalWrite(11, LOW);
-  if(digitalRead(4) == 0){
-    Serial.println("7");
-  }
-  if(digitalRead(5) == 0){
-    Serial.println("8");
-  }
-  if(digitalRead(6) == 0){
-    Serial.println("9");
-  }
-  digitalWrite(11, HIGH);
-
-  digitalWrite(12, LOW);
-  if(digitalRead(4) == 0){
-    Serial.println("X");
-  }
-  if(digitalRead(5) == 0){
-    Serial.println("0");
-  }
-  if(digitalRead(6) == 0){
-    Serial.println("OK");
-  }
-  digitalWrite(12, HIGH);
+void requestEvent(){
+  Wire.write(lastKey);
 }
