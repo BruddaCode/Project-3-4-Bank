@@ -15,7 +15,10 @@ byte rowPins[ROWS] = {9, 10, 11, 12};
 byte colPins[COLS] = {4, 5, 6};   
 Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
-char lastKey = 0;
+#define BUFFER_SIZE 10
+char keyBuffer[BUFFER_SIZE];
+int bufferStart = 0;
+int bufferEnd = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -24,12 +27,22 @@ void setup() {
 }
 
 void loop() {
-  char customKey = customKeypad.getKey();
-  if(customKey && customKey >= '0' && customKey <= '9') {
-    lastKey = customKey;
+  char key = customKeypad.getKey();
+  if ((key && key >= '0' && key <= '9') || (key && key == 'X') || (key && key == 'K')) {
+    // Add to buffer if space is available
+    int nextPos = (bufferEnd + 1) % BUFFER_SIZE;
+    if (nextPos != bufferStart) { // Buffer not full
+      keyBuffer[bufferEnd] = key;
+      bufferEnd = nextPos;
+    }
   }
 }
 
-void requestEvent(){
-  Wire.write(lastKey);
+void requestEvent() {
+  if (bufferStart != bufferEnd) {
+    Wire.write(keyBuffer[bufferStart]);
+    bufferStart = (bufferStart + 1) % BUFFER_SIZE;
+  } else {
+    Wire.write('\0');  // No key available
+  }
 }
