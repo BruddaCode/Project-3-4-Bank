@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang ="en">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
-    <link rel="stylesheet" type="text/css" href="Saldo.css" />
+    <link rel="stylesheet" type="text/css" href="geldOpnamen.css" />
+    <script src="pagina.js" async></script>
     <title>Saldo</title>
 
 </head>
@@ -18,12 +19,12 @@
         <div class="button-grid">
             <div class="side-buttons left-button">
                 <button onclick="" class="button hidden">Button 1</button>
-                <button onclick=""class="button hidden">Rekening inzien</button>
                 <button onclick="window.location.href='home.html';" class="button ">Terug</button>
+                <button onclick="" class="button hidden">button 3</button>
             </div>
-        
-            <div id="article1">
-                <p>Welkom 
+
+            <div id="article2">
+                <p>Welkom
                 <p>Uw saldo is:
                     <br></br>
                 </p>
@@ -31,11 +32,31 @@
 
             <div class="side-buttons right-button">
                 <button onclick="" class="button hidden">button 4</button>
-                <button onclick="" class="button hidden"></button>
-                <button onclick="" class="button hidden"></button>
+                <button onclick="" class="button" id="openAfbreken">Sessie afbreken</button>
+                <button onclick="" class="button hidden">button 6</button>
+            </div>
+
+            <div id="afbreekPopup" class="popup">
+                <div class="popup-content-afbreken">
+                    <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
+                    
+                        <button onclick="" class="button hidden">Button 1</button>
+                        <button onclick=" window.location.href='saldo.html';" class="button" id="miniNee">Nee</button>
+                        <button onclick="" class="button hidden">button 3</button>
+                    
+                    
+                        <button onclick="" class="button hidden">button 4</button>
+                        <button onclick="clearStoredData(); window.location.href='index.html';" class="button"
+                            id="miniJa">Ja</button>
+                        <button onclick="" class="button hidden">button 6</button>
+                    
+
+
+                </div>
             </div>
         </div>
-    </div>  
-    
+    </div>
+
 </body>
+
 </html>
