@@ -7,7 +7,7 @@ const char biljetVraag_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js" async></script>
+    <script src="pagina.js"></script>
     <title>Biljet Keuze</title>
 
 </head>
@@ -29,8 +29,7 @@ const char biljetVraag_html[] PROGMEM = R"rawliteral(
             <div class="side-buttons right-button">
                 <button onclick="" class="button hidden">button 4</button>
                 <button onclick="window.location.href='biljetOptie.html';" class="button" id="biljetJa">Ja</button>
-                <button onclick="" class="button" id="openAfbreken">Sessie
-                    Afbreken</button>
+                <button class="button openAfbrekenBtn">Sessie Afbreken</button>
             </div>
 
             <div id="afbreekPopup" class="popup">

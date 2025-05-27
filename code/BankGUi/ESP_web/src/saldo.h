@@ -7,7 +7,7 @@ const char saldo_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js" async></script>
+    <script src="pagina.js"></script>
     <title>Saldo</title>
 
 </head>
@@ -33,7 +33,7 @@ const char saldo_html[] PROGMEM = R"rawliteral(
 
             <div class="side-buttons right-button">
                 <button onclick="" class="button hidden">button 4</button>
-                <button onclick="" class="button" id="openAfbreken">Sessie afbreken</button>
+                <button class="button openAfbrekenBtn">Sessie Afbreken</button>
                 <button onclick="" class="button hidden">button 6</button>
             </div>
 

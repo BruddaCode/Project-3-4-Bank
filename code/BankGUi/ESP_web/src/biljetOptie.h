@@ -9,11 +9,6 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
     <script src="pagina.js"></script>
     <title>biljet optie</title>
-
-    <style>
-
-    </style>
-
 </head>
 
 <body>
@@ -27,7 +22,7 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
 
       <div id="article1">
         <p>
-          U heeft €<span id="biljetValue">100</span> ingevoerd.<br />
+          U heeft €<span id="biljetValue">100</span> ingevoerd.</br>
           Welke biljet combinatie wilt u?
         </p>
       </div>
@@ -35,7 +30,7 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
       <div class="side-buttons right-button">
         <button onclick="selectBiljetOption('optie2');" class="button" id="Field2">Optie 2</button>
         <button class="button hidden" style="visibility:hidden;"></button>
-        <button class="button" id="openAfbreken">Sessie Afbreken</button>
+        <button class="button openAfbrekenBtn">Sessie Afbreken</button>
       </div>
 
       <!-- Popup -->

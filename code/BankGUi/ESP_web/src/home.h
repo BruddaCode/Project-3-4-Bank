@@ -7,7 +7,7 @@ const char home_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js" async></script>
+    <script src="pagina.js"></script>
     <title>home</title>
 
 </head>
@@ -28,8 +28,9 @@ const char home_html[] PROGMEM = R"rawliteral(
             <div class="side-buttons right-button">
                 <button onclick="window.location.href='geldKeuze.html';" class="button">Geld opnemen</button>
                 <button onclick="storeMoneyValue(70)" class="button">€70,-</button>
-                <button onclick="" class="button" id="openAfbreken">Sessie Afbreken</button>
+                <button class="button openAfbrekenBtn">Sessie Afbreken</button>
             </div>
+
             <div id="afbreekPopup" class="popup">
                 <div class="popup-content-afbreken">
                     <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>

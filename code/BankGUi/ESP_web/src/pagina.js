@@ -33,7 +33,12 @@ function clearStoredData() {
 
 function displayValue() {
     const number = localStorage.getItem('storedMoneyValue') || localStorage.getItem('storedInputMoneyValue');
-    document.getElementById('biljetValue').textContent = number || '';
+    const el = document.getElementById('biljetValue');
+    if (el) {
+        el.textContent = number || '';
+    } else {
+        console.warn('Element #biljetValue not found');
+    }
 }
 
 const biljetten = [50, 20, 10];
@@ -152,20 +157,20 @@ function sendSelectedOption(optionName) {
 }
 
 // Show/hide afbreken popup & handle popup buttons
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     displayValue();
     updateBiljetFields();
 
-    const openAfbreken = document.getElementById('openAfbreken');
+    // const openAfbreken = document.getElementById('openAfbreken');
     const afbreekPopup = document.getElementById('afbreekPopup');
     const miniNee = document.getElementById('miniNee');
     const miniJa = document.getElementById('miniJa');
 
-    if (openAfbreken && afbreekPopup) {
-        openAfbreken.addEventListener('click', () => {
-            afbreekPopup.style.display = 'flex';  // Show popup
+    document.querySelectorAll('.openAfbrekenBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            afbreekPopup.style.display = 'flex';
         });
-    }
+    });
 
     if (miniNee && afbreekPopup) {
         miniNee.addEventListener('click', () => {

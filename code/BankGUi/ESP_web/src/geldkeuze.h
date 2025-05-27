@@ -7,15 +7,8 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js" defer></script>
+    <script src="pagina.js"></script>
     <title>GeldKeuze</title>
-
-    <style>
-
-
-
-    </style>
-
 </head>
 
 <body>
@@ -34,7 +27,7 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
             <div class="side-buttons right-button">
                 <button onclick="storeMoneyValue(100)" class="button">€100,-</button>
                 <button id="openPopup" class="button">Eigen keuze</button>
-                <button class="button" id="openAfbreken">Sessie Afbreken</button>
+                <button class="button openAfbrekenBtn">Sessie Afbreken</button>
             </div>
 
 
