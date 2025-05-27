@@ -1,0 +1,48 @@
+const char home_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html lang ="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="opmaak.css" />
+    <script src="pagina.js" async></script>
+    <title>home</title>
+
+</head>
+
+<body>
+    <div class="conainer">
+        <div class="button-grid">
+            <div class="side-buttons left-button">
+                <button onclick="" class="button hidden">Button 1</button>
+                <button onclick="window.location.href='saldo.html';"class="button">Rekening inzien</button>
+                <button onclick="" class="button hidden"></button>
+            </div>
+        
+            <div id="article1">
+                <p>Welkom </p>
+            </div>
+
+            <div class="side-buttons right-button">
+                <button onclick="window.location.href='geldKeuze.html';" class="button">Geld opnemen</button>
+                <button onclick="storeMoneyValue(70)" class="button">€70,-</button>
+                <button onclick="" class="button" id="openAfbreken">Sessie Afbreken</button>
+            </div>
+            <div id="afbreekPopup" class="popup">
+                <div class="popup-content-afbreken">
+                    <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
+
+                    <button onclick=" window.location.href='home.html';" class="button" id="miniNee">Nee
+                    </button>
+                    <button onclick="clearStoredData(); window.location.href='index.html';" class="button"
+                        id="miniJa">Ja</button>
+
+                </div>
+            </div>
+        </div>
+    </div>    
+</body>
+</html>
+)rawliteral";

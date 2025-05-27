@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "system_error": "cpp",
+        "regex": "cpp"
+    }
+}
