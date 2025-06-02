@@ -90,7 +90,6 @@ function selectBiljetOption(option) {
     sendSelectedOption(option);
 }
 
-
 function sendMoneyValueToESP() {
     const bedrag = parseInt(localStorage.getItem('storedMoneyValue') || localStorage.getItem('storedInputMoneyValue'));
     if (!bedrag) return;
@@ -114,8 +113,8 @@ function selectBiljetOption(option) {
         alert('Geen gegevens gevonden voor deze optie.');
         return;
     }
-    
     sendSelectedOption(option);
+    console.log(option);
 }
 
 function sendSelectedOption(optionName) {
@@ -124,13 +123,11 @@ function sendSelectedOption(optionName) {
         alert('Geen bedrag gevonden. Voer eerst een bedrag in.');
         return;
     }
-    
     const results = JSON.parse(localStorage.getItem('biljetResults'));
     if (!results || !results[optionName]) {
         alert('Biljet resultaten ontbreken.');
         return;
     }
-    
     const selected = results[optionName];
     const biljetten = [50, 20, 10];
     let plainText = `Option: ${optionName}\nAmount: €${bedrag}\n`;
@@ -185,5 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 
 )rawliteral";
