@@ -9,18 +9,17 @@ void setup() {
   Wire.begin();
   Serial.begin(9600);
 
-  requestPin();
-  String pincode = pin;
-  pincode = pincode.substring(0, 4);
-  Serial.println(pincode);
-  for(int i = 0; i < 4; i++){
-    pin[i] = '\0';
-  }
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  requestPin();
+  String pincode = pin;
+  pincode = pincode.substring(0, 4);
+  Serial.println(pincode);
+  for(int i = 0; i < 5; i++){
+    pin[i] = '\0';
+  }
 }
 
 void Transmission(){
