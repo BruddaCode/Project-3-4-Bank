@@ -25,7 +25,6 @@ BankCard validCards[] = {
 };
 
 const int numCards = sizeof(validCards) / sizeof(validCards[0]);
-int card;
 
 #define green_led 7
 #define red_led 6
@@ -77,29 +76,24 @@ void checkCardIDs(String content) {
     }
   }
   Serial.println("Geen Geldige Kaart (Invalid Card)");
+  digitalWrite(red_led, HIGH);
+  delay(3000);
+  digitalWrite(red_led, LOW);
 }
 
-void checkCardPincode(int index) {
-  int tries = 3;
-  if(!validCards[index].blocked){
-    for(int i = 0; i < tries; i++){
-      Serial.print("Enter PIN for card ");
-      Serial.println(validCards[index].cardID);
-      
+bool checkCardPincode(int index) {
+  Serial.print("Enter PIN for card ");
+  Serial.println(validCards[index].cardID);
+  
 
-      // Placeholder for PIN verification logic
-      while (Serial.available() == 0) {}
-      String input = Serial.readString();
-      input.trim();
+  // Placeholder for PIN verification logic
+  while (Serial.available() == 0) {}
+  String input = Serial.readString();
+  input.trim();
 
-      if (input == String(validCards[index].Pincode)) {
-        Serial.println("Access Granted!");
-        return;
-      } else {
-        Serial.println("Incorrect PIN! Access Denied.");
-      }
-    }
+  if (input == String(validCards[index].Pincode)) {
+    Serial.println("Access Granted!");
+  } else {
+    Serial.println("Incorrect PIN! Access Denied.");
   }
-  validCards[index].blocked = true;
-  Serial.println("Card is blocked."); 
 }
