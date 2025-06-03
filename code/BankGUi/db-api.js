@@ -40,7 +40,7 @@ function validateAccount(iban, pin, res, callback) {
     })
 }
 
-app.post('/api/noob/users/getinfo', (req, res) => {
+app.post('/api/users/getinfo', (req, res) => {
     const requestData = checkJson(req.body, res)
     if (!requestData) return
 
@@ -52,7 +52,7 @@ app.post('/api/noob/users/getinfo', (req, res) => {
     })
 })
 
-app.post('/api/noob/users/withdraw', (req, res) => {
+app.post('/api/users/withdraw', (req, res) => {
     const requestData = checkJson(req.body, res)
     if (!requestData) return
 
