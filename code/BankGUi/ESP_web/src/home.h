@@ -35,11 +35,8 @@ const char home_html[] PROGMEM = R"rawliteral(
                 <div class="popup-content-afbreken">
                     <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
 
-                    <button onclick=" window.location.href='home.html';" class="button" id="miniNee">Nee
-                    </button>
-                    <button onclick="clearStoredData(); window.location.href='index.html';" class="button"
-                        id="miniJa">Ja</button>
-
+                    <button onclick=" window.location.href='home.html';" class="button" id="miniNee">Nee</button>
+                    <button onclick="clearStoredData(); window.location.href='index.html';" class="button" id="miniJa">Ja</button>
                 </div>
             </div>
         </div>
