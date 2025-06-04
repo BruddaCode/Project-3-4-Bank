@@ -33,14 +33,17 @@ void setup() {
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
+
+  Serial.println("Ready to do nothing");
 }
 
 void loop() {
   char key = customKeypad.getKey();
   if ((key && key >= '0' && key <= '9') || (key && key == 'X') || (key && key == 'K')) {
-    Serial.println("pas:" + key);
+    String pressedkey = "pin:";
+    pressedkey += key;
     Wire.beginTransmission(4);
-    Wire.write(("pas:" + key).c_str);
+    Wire.write(pressedkey.c_str());
     Wire.endTransmission();
   }
   RFID();

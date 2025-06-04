@@ -3,6 +3,7 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <Wire.h>
+#include <HTTPClient.h>
 
 // paginas
 #include "index.h"
@@ -15,11 +16,16 @@
 #include "bonVraag.h"
 #include "biljetOptie.h"
 
+// global variables
+String noob_api = "noob.datalabrotterdam.nl/api/noob/users/";
+String local_api = "http://145.24.222.28:9000/api/noob/users/";
+
 // user variables
 String iban;
-int pin;
-int pasnummer;
-
+String pasnummer;
+String pin;
+float saldo;
+float amount;
 
 // webserver
 const char *ssid = "potatopotatoooooo";     // CHANGE IT
@@ -64,13 +70,90 @@ void initWebSocket() {
   server.addHandler(&ws);
 }
 
+void callApi(String type, String iban, String pasnummer, String pin, String amount) {
+  HTTPClient http;
+  String url = "";
+  String param = "?target=" + iban;
+  String json = "";
+  if (iban.indexOf("SYMB") > -1) {
+    url += local_api;
+  } else {
+    url += noob_api;
+  }
+
+  http.addHeader("NOOB-TOKEN", "7d23088f-5e46-4944-81d4-e99d5c827140"); // shhhhhhhhh you see nothing
+
+  if (type == "getinfo") {
+    url += "getinfo" + param;
+    json = "{\"iban\": "+ iban +",  \"pin\": "+ pin +", \"pasnummer\": "+ pasnummer +"}";
+  }
+
+  if (type == "withdraw") {
+    url += "withdraw" + param;
+    json = "{\"iban\": "+ iban +",  \"pin\": "+ pin +", \"pasnummer\": "+ pasnummer +", \"amount\": "+ amount +"}";
+  }
+
+  Serial.println("Calling API: " + url);
+  
+  int httpCode = http.POST(json);
+  if (httpCode > 0) { // Check for the returning code
+    String payload = http.getString();
+    Serial.println("HTTP Response code: " + String(httpCode));
+    Serial.println("Response payload: " + payload);
+    if (httpCode == 200) {
+      // go to next page
+      // fill saldo variable
+    } else {
+      // show error on the page
+      // reset variables
+    }
+  }
+}
+
+
 void Arduino(int msg) {
   String fromArduino ="";
   while (Wire.available()) {
     char c = Wire.read();
     fromArduino += c;
   }
-  Serial.println("Arduino received: " + fromArduino);
+  int separatorIndex = fromArduino.indexOf(':');
+  String command = "";
+  String value = "";
+  String subvalue = "";
+  if (separatorIndex != -1) {
+    command = fromArduino.substring(0, separatorIndex);
+    value = fromArduino.substring(separatorIndex + 1);
+    int subSeparatorIndex = value.indexOf(':');
+    subvalue = "";
+    if (subSeparatorIndex != -1) {
+      subvalue = value.substring(subSeparatorIndex + 1);
+      value = value.substring(0, subSeparatorIndex);
+    }
+  }
+
+
+  if (command == "pas") {
+    iban = value;
+    pasnummer = subvalue;
+    Serial.println("Received IBAN: " + iban + ", Pasnummer: " + pasnummer);
+    pin = ""; // Reset pin after receiving new pas
+    notifyClients("card:"); // Notify clients with the new PIN
+  }
+  if (command == "pin" && pin.length() != 4) {
+    pin += value.toInt();
+    Serial.println("Received PIN: " + String(pin));
+    notifyClients("pin:" + pin); // Notify clients with the new PIN
+  }
+  if (command == "pin" && pin.length() == 4 && value == "K") {
+    Serial.println("PIN already set: " + String(pin));
+    callApi("getinfo", iban, pasnummer, pin, "0"); // Call API to get user info
+  }
+  if (command == "pin" && value == "X") {
+    Serial.println("PIN reset");
+    pin = "";
+    notifyClients("pin:" + pin); // Notify clients with the new PIN
+  }
 }
 
 // arduino code
