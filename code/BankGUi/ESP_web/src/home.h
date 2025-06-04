@@ -27,7 +27,7 @@ const char home_html[] PROGMEM = R"rawliteral(
             <div class="side-buttons right-button">
                 <button onclick="window.location.href='geldKeuze';" class="button" id="geldOpnemen">Geld opnemen</button>
                 <button onclick="storeMoneyValue(70)" "window.location.href='bonVraag';" class="button" id= "snelPin">€70,-</button>
-                <button id="afbreken">Sessie Afbreken</button>
+                <button class="button openAfbrekenBtn" id="afbreken">Sessie Afbreken</button>
             </div>
 
             <div id="afbreekPopup" class="popup">
