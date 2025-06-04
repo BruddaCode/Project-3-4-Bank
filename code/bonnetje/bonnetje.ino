@@ -1,8 +1,8 @@
 #include "Adafruit_Thermal.h"
 #include "SoftwareSerial.h"
 
-#define RX_PIN 4
-#define TX_PIN 3
+#define RX_PIN 16
+#define TX_PIN 17
 
 SoftwareSerial mySerial(TX_PIN, RX_PIN);
 Adafruit_Thermal printer(&mySerial);

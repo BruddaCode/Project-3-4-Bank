@@ -60,6 +60,14 @@ const char saldo_html[] PROGMEM = R"rawliteral(
         const gateway = `ws://${window.location.hostname}/ws`;
         const websocket = new WebSocket(gateway);
 
+        window.onload = () => {
+            websocket.send("getSaldo");
+        };
+
+        document.getElementById('afbreken').addEventListener('click', () => {
+            websocket.send("break");
+        });
+        
         websocket.onmessage = (event) => {
             const msg = event.data.split(":");
                     
@@ -77,13 +85,6 @@ const char saldo_html[] PROGMEM = R"rawliteral(
             }     
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            websocket.send("getSaldo");
-        });
-
-        document.getElementById('afbreken').addEventListener('click', () => {
-            websocket.send("break");
-        });
     </script>
 </body>
 

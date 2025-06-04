@@ -4,6 +4,7 @@
 #include <ESPAsyncWebServer.h>
 #include <Wire.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 
 // paginas
 #include "index.h"
@@ -109,22 +110,28 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
   http.addHeader("Content-Type", "application/json");
   http.addHeader("Content-Length", String(json.length()));
 
-
-
   int httpCode = http.POST(json);
   Serial.println("HTTP Response code: " + String(httpCode));
   if (httpCode > 0) { // Check for the returning code
     String payload = http.getString();
+    DynamicJsonDocument doc(1024);
+    deserializeJson(doc, payload);
+    JsonObject obj = doc.as<JsonObject>();
+    iban = obj["iban"].as<String>();
+    saldo = obj["saldo"].as<float>();
+
     Serial.println("HTTP Response code: " + String(httpCode));
     Serial.println("Response payload: " + payload);
     if (httpCode == 200) {
+
+
       notifyClients("home:"); // Notify clients to show the side buttons
       // go to next page
-
-      // fill saldo variable
+      
     } else {
       // show error on the page
       // reset variables
+      
     }
     http.end();
   }
