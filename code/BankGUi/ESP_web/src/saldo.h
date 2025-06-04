@@ -7,7 +7,6 @@ const char saldo_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js"></script>
     <title>Saldo</title>
 
 </head>
@@ -20,14 +19,14 @@ const char saldo_html[] PROGMEM = R"rawliteral(
         <div class="button-grid">
             <div class="side-buttons left-button">
                 <button onclick="" class="button hidden">Button 1</button>
-                <button onclick="window.location.href='home.html';" class="button" id="terug">Terug</button>
+                <button onclick="window.location.href='home';" class="button" id="terug">Terug</button>
                 <button onclick="" class="button hidden">button 3</button>
             </div>
 
             <div id="article2">
                 <p>Welkom
                 <p>Uw saldo is:
-                    <br></br>
+                <br><span id="saldoValue">0</span> Euro</p>
                 </p>
             </div>
 
@@ -42,12 +41,12 @@ const char saldo_html[] PROGMEM = R"rawliteral(
                     <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
                     
                         <button onclick="" class="button hidden">Button 1</button>
-                        <button onclick=" window.location.href='saldo.html';" class="button" id="miniNee">Nee</button>
+                        <button onclick=" window.location.href='saldo';" class="button" id="miniNee">Nee</button>
                         <button onclick="" class="button hidden">button 3</button>
                     
                     
                         <button onclick="" class="button hidden">button 4</button>
-                        <button onclick="clearStoredData(); window.location.href='index.html';" class="button"
+                        <button onclick="clearStoredData(); window.location.href='index';" class="button"
                             id="miniJa">Ja</button>
                         <button onclick="" class="button hidden">button 6</button>
                     
@@ -70,14 +69,22 @@ const char saldo_html[] PROGMEM = R"rawliteral(
                 }
                 if (msg[1] === "2") {
                     document.getElementById('terug').style.display = 'flex';
-                }                                
-        }     
-    };
+                }
+            }
 
-    document.getElementById('afbreken').addEventListener('click', () => {
-        websocket.send("sideBtn:break");
-    });
-  </script>
+            if (msg[0] === "saldo") {
+                document.getElementById('saldoValue').innerHTML = msg[1];                             
+            }     
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            websocket.send("getSaldo");
+        });
+
+        document.getElementById('afbreken').addEventListener('click', () => {
+            websocket.send("break");
+        });
+    </script>
 </body>
 
 </html>
