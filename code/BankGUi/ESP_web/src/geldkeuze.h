@@ -7,7 +7,6 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js"></script>
     <title>GeldKeuze</title>
 </head>
 
@@ -15,8 +14,8 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
     <div class="container">
         <div class="button-grid">
             <div class="side-buttons left-button">
-                <button onclick="storeMoneyValue(20)" class="button" id="20Pin">€20,-</button>
-                <button onclick="storeMoneyValue(50)" class="button" id="50Pin">€50,-</button>
+                <button class="button" id="20Pin">€20,-</button>
+                <button class="button" id="50Pin">€50,-</button>
                 <button onclick="window.location.href='home';" class="button" id="terug">Terug</button>
             </div>
 
@@ -25,7 +24,7 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
             </div>
 
             <div class="side-buttons right-button">
-                <button onclick="storeMoneyValue(100)" class="button" id= "100Pin">€100,-</button>
+                <button class="button" id= "100Pin">€100,-</button>
                 <button id="openPopup" class="button" id="eigenKeuze">Eigen keuze</button>
                 <button class="button openAfbrekenBtn" id="afbreken">Sessie Afbreken</button>
             </div>
@@ -47,7 +46,7 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
                 <div class="popup-content-afbreken">
                 <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
                 <button onclick="afbreekPopup.style.display='none';" class="button" id="miniNee">Nee</button>
-                <button type="button" class="button" id="miniJa">Ja</button>
+                <button id="bevestig_afbreken" class="button" id="miniJa">Ja</button>
                 </div>
             </div>
         </div>
@@ -109,8 +108,26 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
             }     
         };
 
+        document.getElementById('20Pin').addEventListener('click', () => {
+            websocket.send("pin20");
+            window.location.href = 'biljetVraag';
+        });
+        document.getElementById('50Pin').addEventListener('click', () => {
+            websocket.send("pin20");
+            window.location.href = 'biljetVraag';
+        });
+        document.getElementById('100Pin').addEventListener('click', () => {
+            websocket.send("pin20");
+            window.location.href = 'biljetVraag';
+        });
+
         document.getElementById('afbreken').addEventListener('click', () => {
-            websocket.send("sideBtn:break");
+                    document.getElementById('afbreekPopup').style.display = 'flex';
+                });
+
+        document.getElementById('bevestig_afbreken').addEventListener('click', () => {
+            websocket.send("break");
+            window.location.href = '/';
         });
 
     </script>

@@ -12,7 +12,6 @@
 #include "saldo.h"
 #include "geldKeuze.h"
 #include "opmaak.css"
-#include "pagina.js"
 #include "biljetVraag.h"
 #include "bonVraag.h"
 #include "biljetOptie.h"
@@ -22,11 +21,11 @@ String noob_api = "noob.datalabrotterdam.nl/api/noob/users/";
 String local_api = "http://145.24.222.28:9000/api/noob/users/";
 
 // user variables
-String iban;
-String pasnummer;
-String pin;
-float saldo;
-float amount;
+String iban = "";
+String pasnummer = "";
+String pin = "";
+float saldo = 0.0;
+float amount = 0.0;
 
 // webserver
 const char *ssid = "Samsung Smart Fridge";     // CHANGE IT
@@ -49,6 +48,30 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     if (msg == "getSaldo") {
       notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
     }
+    if (msg == "break") {
+      iban = "";
+      pasnummer = "";
+      pin = "";
+      saldo = 0.0;
+      amount = 0.0;
+    }
+    if (msg == "pin20") {
+      amount = 20.0;
+    }
+    if (msg == "pin50") {
+      amount = 50.0;
+    }
+    if (msg == "pin70") {
+      amount = 70.0;
+    }
+    if (msg == "pin100") {
+      amount = 100.0;
+    }
+    if (msg == "getAmount") {
+      notifyClients("amount:" + String(amount, 2)); // Notify clients with the current amount
+    }
+
+    
   }
 }
 
@@ -217,10 +240,6 @@ void setup() {
 
   server.on("/opmaak.css", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/css", opmaak_css);
-  });
-
-  server.on("/pagina.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(200, "application/javascript", pagina_js);
   });
 
   server.begin();

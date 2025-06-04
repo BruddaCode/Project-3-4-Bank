@@ -7,7 +7,6 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js"></script>
     <title>biljet optie</title>
 </head>
 
@@ -17,12 +16,12 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
       <div class="side-buttons left-button">
         <button onclick="selectBiljetOption('optie1');" class="button" id="Field1">Optie 1</button>
         <button onclick="selectBiljetOption('optie3');" class="button" id="Field3">Optie 3</button>
-        <button onclick="clearStoredData(); window.location.href='geldKeuze.html';" class="button" id="terug">Terug</button>
+        <button onclick="window.location.href='geldKeuze';" class="button" id="terug">Terug</button>
       </div>
 
       <div id="article1">
         <p>
-          U heeft €<span id="biljetValue">100</span> ingevoerd.</br>
+          U heeft €<span id="biljetValue">0</span> ingevoerd.</br>
           Welke biljet combinatie wilt u?
         </p>
       </div>
@@ -38,7 +37,7 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
         <div class="popup-content-afbreken">
           <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
           <button onclick="afbreekPopup.style.display='none';" class="button" id="miniNee">Nee</button>
-          <button onclick="clearStoredData(); window.location.href='index.html';" class="button" id="miniJa">Ja</button>
+          <button id="bevestig_afbreken" class="button" id="miniJa">Ja</button>
         </div>
       </div>
     </div>
@@ -50,8 +49,18 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     const gateway = `ws://${window.location.hostname}/ws`;
     const websocket = new WebSocket(gateway);
 
+    window.addEventListener('load', onload);
+
+    function onload(event) {
+      websocket.send("getAmount");
+    }
+
     websocket.onmessage = (event) => {
       const msg = event.data.split(":");
+
+      if (msg[0] === "amount") {
+        document.getElementById('biljetValue').innerText = msg[1];
+      }
                     
       if (msg[0] === "sideBtn") {
         if (msg[1] === "6") {
@@ -73,7 +82,12 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     };
 
     document.getElementById('afbreken').addEventListener('click', () => {
-      websocket.send("sideBtn:break");
+                    document.getElementById('afbreekPopup').style.display = 'flex';
+                });
+
+    document.getElementById('bevestig_afbreken').addEventListener('click', () => {
+        websocket.send("break");
+        window.location.href = '/';
     });
   </script>
 

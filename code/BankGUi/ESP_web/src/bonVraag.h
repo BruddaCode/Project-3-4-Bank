@@ -7,7 +7,6 @@ const char bonVraag_html[] PROGMEM = R"rawliteral(
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
   <link rel="stylesheet" type="text/css" href="opmaak.css" />
-  <script src="pagina.js"></script>
   <title>Bon Vraag</title>
 
   <style>
@@ -22,7 +21,7 @@ const char bonVraag_html[] PROGMEM = R"rawliteral(
         <div class="button-grid">
             <div class="side-buttons left-button">
                 <button onclick="" class="button hidden">Terug</button>
-                <button onclick="clearStoredData(); window.location.href='index';" class="button" id="nee">Nee </button>
+                <button window.location.href='/';" class="button" id="nee">Nee </button>
                 <button onclick="" class="button hidden">button 3</button>
             </div>
         
@@ -35,7 +34,7 @@ const char bonVraag_html[] PROGMEM = R"rawliteral(
 
             <div class="side-buttons right-button">
                 <button onclick="" class="button hidden">button 4</button>
-                <button onclick="clearStoredData(); window.location.href='index';" class="button" id="ja">Ja</button>
+                <button window.location.href='/';" class="button" id="ja">Ja</button>
                 <button onclick="" class="button hidden">button 5</button>
             </div>
         </div>
@@ -58,6 +57,15 @@ const char bonVraag_html[] PROGMEM = R"rawliteral(
                 }
             }     
         };
+
+        document.getElementById('afbreken').addEventListener('click', () => {
+                    document.getElementById('afbreekPopup').style.display = 'flex';
+                });
+
+        document.getElementById('bevestig_afbreken').addEventListener('click', () => {
+            websocket.send("break");
+            window.location.href = '/';
+        });
     </script>    
 </body>
 </html>

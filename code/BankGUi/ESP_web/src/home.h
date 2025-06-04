@@ -26,7 +26,7 @@ const char home_html[] PROGMEM = R"rawliteral(
 
             <div class="side-buttons right-button">
                 <button onclick="window.location.href='geldKeuze';" class="button" id="geldOpnemen">Geld opnemen</button>
-                <button onclick="storeMoneyValue(70)" "window.location.href='bonVraag';" class="button" id= "snelPin">€70,-</button>
+                <button class="button" id= "snelPin">€70,-</button>
                 <button class="button openAfbrekenBtn" id="afbreken">Sessie Afbreken</button>
             </div>
 
@@ -34,15 +34,21 @@ const char home_html[] PROGMEM = R"rawliteral(
                 <div class="popup-content-afbreken">
                     <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
 
-                    <button onclick=" window.location.href='home';" class="button" id="miniNee">Nee</button>
-                    <button onclick="clearStoredData(); window.location.href='index';" class="button" id="miniJa">Ja</button>
+                    <button onclick="" class="button hidden">Button 1</button>
+                        <button onclick=" window.location.href='home';" class="button" id="miniNee">Nee</button>
+                        <button onclick="" class="button hidden">button 3</button>
+                    
+                    
+                        <button onclick="" class="button hidden">button 4</button>
+                        <button id="bevestig_afbreken" class="button" id="miniJa">Ja</button>
+                        <button onclick="" class="button hidden">button 6</button>
                 </div>
             </div>
 
             <script> 
                 const gateway = `ws://${window.location.hostname}/ws`;
                 const websocket = new WebSocket(gateway);
-
+                
                 websocket.onmessage = (event) => {
                     const msg = event.data.split(":");
                     
@@ -66,8 +72,18 @@ const char home_html[] PROGMEM = R"rawliteral(
                     }        
                 };
 
+                document.getElementById('snelPin').addEventListener('click', () => {
+                    websocket.send("pin70");
+                    window.location.href = 'bonVraag';
+                });
+
                 document.getElementById('afbreken').addEventListener('click', () => {
+                    document.getElementById('afbreekPopup').style.display = 'flex';
+                });
+
+                document.getElementById('bevestig_afbreken').addEventListener('click', () => {
                     websocket.send("break");
+                    window.location.href = '/';
                 });
             </script>
         </div>
