@@ -27,12 +27,13 @@ app.get('/api/noob/health', (req, res) => {
 })
 
 // Common function for account validation
-function validateAccount(iban, pin, res, callback) {
-    db.query('SELECT * FROM rekeningen WHERE iban = ?', [iban], (err, result) => {
+function validateAccount(iban, pin, pasnummer, res, callback) {
+    db.query('SELECT * FROM rekeningen WHERE iban = ? AND pasnr = ?', [iban, pasnummer], (err, result) => {
         if (err) return res.status(500).json({ error: err })
         if (!result[0]) return res.status(404).json({ error: "Can't find user" })
 
         const account = result[0]
+        console.log('Account found:', account)
         if (account.actief === 0) return res.status(403).json({ error: "Card is blocked" })
         if (account.pin !== pin) return res.status(403).json({ error: "Wrong pin" })
 
@@ -46,9 +47,9 @@ app.post('/api/noob/users/getinfo', (req, res) => {
     const requestData = checkJson(req.body, res)
     if (!requestData) return
 
-    const { iban, pin } = requestData
+    const { iban, pin, pasnummer} = requestData
 
-    validateAccount(iban, pin, res, (account) => {
+    validateAccount(iban, pin, pasnummer, res, (account) => {
         const { iban, saldo, valuta } = account
         res.json({ iban, saldo, valuta })
     })
