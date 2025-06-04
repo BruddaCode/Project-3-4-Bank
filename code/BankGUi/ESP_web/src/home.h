@@ -7,7 +7,6 @@ const char home_html[] PROGMEM = R"rawliteral(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
-    <script src="pagina.js"></script>
     <title>home</title>
 
 </head>
@@ -16,9 +15,9 @@ const char home_html[] PROGMEM = R"rawliteral(
     <div class="conainer">
         <div class="button-grid">
             <div class="side-buttons left-button">
-                <button onclick="" class="button hidden">Button 1</button>
-                <button onclick="window.location.href='saldo.html';"class="button">Rekening inzien</button>
-                <button onclick="" class="button hidden"></button>
+                <button class="button hidden"></button>
+                <button onclick="window.location.href='saldo';"class="button">Rekening inzien</button>
+                <button class="button hidden"></button>
             </div>
         
             <div id="article1">
@@ -26,22 +25,42 @@ const char home_html[] PROGMEM = R"rawliteral(
             </div>
 
             <div class="side-buttons right-button">
-                <button onclick="window.location.href='geldKeuze.html';" class="button">Geld opnemen</button>
+                <button onclick="window.location.href='geldKeuze';" class="button">Geld opnemen</button>
                 <button onclick="storeMoneyValue(70)" class="button">€70,-</button>
-                <button class="button openAfbrekenBtn">Sessie Afbreken</button>
+                <button id="afbreken">Sessie Afbreken</button>
             </div>
 
             <div id="afbreekPopup" class="popup">
                 <div class="popup-content-afbreken">
                     <h3>Weet u zeker dat u de sessie wilt afbreken?</h3>
 
-                    <button onclick=" window.location.href='home.html';" class="button" id="miniNee">Nee
-                    </button>
-                    <button onclick="clearStoredData(); window.location.href='index.html';" class="button"
-                        id="miniJa">Ja</button>
-
+                    <button onclick=" window.location.href='home';" class="button" id="miniNee">Nee</button>
+                    <button onclick="clearStoredData(); window.location.href='index';" class="button" id="miniJa">Ja</button>
                 </div>
             </div>
+
+            <script> 
+                const gateway = `ws://${window.location.hostname}/ws`;
+                const websocket = new WebSocket(gateway);
+
+                websocket.onmessage = (event) => {
+                    const msg = event.data.split(":");
+                    
+                    if (msg[0] === "sideBtn") {
+                        if (msg[1] === "break") {
+                            document.getElementById('afbreekPopup').style.display = 'flex';
+                        }
+                    }
+
+                    if (msg[0] === "pin") {
+                        document.getElementById('pincode').value = msg[1];
+                    }        
+                };
+
+                document.getElementById('afbreken').addEventListener('click', () => {
+                    websocket.send("sideBtn:break");
+                });
+            </script>
         </div>
     </div>    
 </body>
