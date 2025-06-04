@@ -35,7 +35,7 @@ function validateAccount(iban, pin, pasnummer, res, callback) {
         const account = result[0]
         console.log('Account found:', account)
         if (account.actief === 0) return res.status(403).json({ error: "Card is blocked" })
-        if (account.pin !== pin) return res.status(403).json({ error: "Wrong pin" })
+        if (account.pin !== parseInt(pin)) return res.status(403).json({ error: "Wrong pin" })
 
         callback(account)
     })
