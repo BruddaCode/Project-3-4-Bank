@@ -51,7 +51,15 @@ const char index_html[] PROGMEM = R"rawliteral(
 
         if (msg[0] === "pin") {
           document.getElementById('pincode').value = msg[1];
-        }        
+        }
+
+        if (msg[0] === "error") {
+          document.getElementById('foutMelding').innerText = msg[1];
+        }
+
+        if (msg[0] === "home") {
+          window.location.href = 'home';
+        }
       };
     </script>
 </body>

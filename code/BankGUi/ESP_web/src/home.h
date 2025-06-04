@@ -67,7 +67,7 @@ const char home_html[] PROGMEM = R"rawliteral(
                 };
 
                 document.getElementById('afbreken').addEventListener('click', () => {
-                    websocket.send("sideBtn:break");
+                    websocket.send("break");
                 });
             </script>
         </div>

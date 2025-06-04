@@ -1,6 +1,4 @@
 // libs
-#define LOGGING
-
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
@@ -21,7 +19,6 @@
 // global variables
 String noob_api = "noob.datalabrotterdam.nl/api/noob/users/";
 String local_api = "http://145.24.222.28:9000/api/noob/users/";
-// String local_api = " http://145.24.223.249:8469/local/";
 
 // user variables
 String iban;
@@ -37,6 +34,10 @@ const char *password = "qqqqqqqq";  // CHANGE IT
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
+void notifyClients(String msg) {
+  ws.textAll(msg);
+}
+
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
@@ -44,7 +45,9 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     for (size_t i = 0; i < len; i++) {
       msg += (char) data[i];
     }
-    Serial.println(msg);
+    if (msg == "getSaldo") {
+      notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
+    }
   }
 }
 
@@ -62,10 +65,6 @@ void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType 
     default:
       break;
   }
-}
-
-void notifyClients(String msg) {
-  ws.textAll(msg);
 }
 
 void initWebSocket() {
@@ -119,7 +118,9 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
     Serial.println("HTTP Response code: " + String(httpCode));
     Serial.println("Response payload: " + payload);
     if (httpCode == 200) {
+      notifyClients("home:"); // Notify clients to show the side buttons
       // go to next page
+
       // fill saldo variable
     } else {
       // show error on the page
