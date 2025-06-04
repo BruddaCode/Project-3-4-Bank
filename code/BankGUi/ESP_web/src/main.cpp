@@ -28,16 +28,18 @@ float saldo = 0.0;
 float amount = 0.0;
 
 // webserver
-const char *ssid = "Samsung Smart Fridge";     // CHANGE IT
-const char *password = "qqqqqqqq";  // CHANGE IT
+const char *ssid = "Samsung Smart Fridge";
+const char *password = "qqqqqqqq";
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
+// stuurt een bericht naar de website
 void notifyClients(String msg) {
   ws.textAll(msg);
 }
 
+// ontvangt berichten die verstuurd zijn vanuit de website
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
@@ -103,6 +105,9 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
   String json = "";
   String param = "";
   int urlType = 0; // 0 for noob, 1 for local
+
+  // checkt of de iban van Symple is of niet
+  // dit begint ook gelijk de url op te bouwen
   if (iban.indexOf("SYMB") > -1) {
     url += local_api;
     urlType = 1; // Use local API
@@ -112,20 +117,22 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
     urlType = 0; // Use noob API
   }
   
+  // kijkt of je geld wilt opnemen of informatie wilt ophalen
   if (type == "getinfo") {
     url += "getinfo" + param;
     json = "{\"iban\": \"" + iban + "\", \"pin\": \"" + pin + "\", \"pasnummer\": \"" + pasnummer + "\"}";
   }
-
   if (type == "withdraw") {
     url += "withdraw" + param;
     json = "{\"iban\": \"" + iban + "\", \"pin\": \"" + pin + "\", \"pasnummer\": \"" + pasnummer + "\", \"amount\": \"" + amount + "\"}";
   }
   
+  // debug print om te zien wat er waar verstuurd wordt
   Serial.println("Calling API: " + url);
   Serial.println("Request JSON:");
   Serial.println(json);
   
+  // start de http request
   http.begin(client, url); // Specify the URL
   if (urlType == 0) {
     http.addHeader("NOOB-TOKEN", "7d23088f-5e46-4944-81d4-e99d5c827140"); // shhhhhhhhh you see nothing
@@ -133,6 +140,7 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
   http.addHeader("Content-Type", "application/json");
   http.addHeader("Content-Length", String(json.length()));
 
+  // vangt de response van de API
   int httpCode = http.POST(json);
   Serial.println("HTTP Response code: " + String(httpCode));
   if (httpCode > 0) { // Check for the returning code
@@ -146,21 +154,20 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
     Serial.println("HTTP Response code: " + String(httpCode));
     Serial.println("Response payload: " + payload);
     if (httpCode == 200) {
-
-
-      notifyClients("home:"); // Notify clients to show the side buttons
-      // go to next page
+      // ga naar home pagina
+      notifyClients("home:");
       
     } else {
       // show error on the page
       // reset variables
-      
+      // notifyClients("error:An error occurred while processing your request. Please try again.");
+
     }
     http.end();
   }
 }
 
-
+// leest de data van de arduino via I2C
 void Arduino(int msg) {
   String fromArduino ="";
   while (Wire.available()) {
@@ -182,7 +189,7 @@ void Arduino(int msg) {
     }
   }
 
-
+  // filtert de ontvangen data en stopt de data in de juiste variabelen
   if (command == "pas") {
     iban = value;
     pasnummer = subvalue;
