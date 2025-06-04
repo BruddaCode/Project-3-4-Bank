@@ -41,6 +41,8 @@ function validateAccount(iban, pin, res, callback) {
 }
 
 app.post('/api/noob/users/getinfo', (req, res) => {
+    // print request body for debugging
+    console.log('Request body:', req.body)
     const requestData = checkJson(req.body, res)
     if (!requestData) return
 
@@ -53,6 +55,7 @@ app.post('/api/noob/users/getinfo', (req, res) => {
 })
 
 app.post('/api/noob/users/withdraw', (req, res) => {
+    console.log('Request body:', req.body)
     const requestData = checkJson(req.body, res)
     if (!requestData) return
 

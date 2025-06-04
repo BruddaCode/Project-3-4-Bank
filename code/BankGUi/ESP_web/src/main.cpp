@@ -1,4 +1,6 @@
 // libs
+#define LOGGING
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
@@ -19,6 +21,7 @@
 // global variables
 String noob_api = "noob.datalabrotterdam.nl/api/noob/users/";
 String local_api = "http://145.24.222.28:9000/api/noob/users/";
+// String local_api = " http://145.24.223.249:8469/local/";
 
 // user variables
 String iban;
@@ -28,8 +31,8 @@ float saldo;
 float amount;
 
 // webserver
-const char *ssid = "potatopotatoooooo";     // CHANGE IT
-const char *password = "heelsterkwachtwoord";  // CHANGE IT
+const char *ssid = "Samsung Smart Fridge";     // CHANGE IT
+const char *password = "qqqqqqqq";  // CHANGE IT
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
@@ -72,30 +75,45 @@ void initWebSocket() {
 
 void callApi(String type, String iban, String pasnummer, String pin, String amount) {
   HTTPClient http;
+  WiFiClient client;
   String url = "";
-  String param = "?target=" + iban;
   String json = "";
+  String param = "";
+  int urlType = 0; // 0 for noob, 1 for local
   if (iban.indexOf("SYMB") > -1) {
     url += local_api;
+    urlType = 1; // Use local API
   } else {
     url += noob_api;
+    param = "?target=" + iban;
+    urlType = 0; // Use noob API
   }
-
-  http.addHeader("NOOB-TOKEN", "7d23088f-5e46-4944-81d4-e99d5c827140"); // shhhhhhhhh you see nothing
-
+  
   if (type == "getinfo") {
     url += "getinfo" + param;
-    json = "{\"iban\": "+ iban +",  \"pin\": "+ pin +", \"pasnummer\": "+ pasnummer +"}";
+    json = "{\"iban\": \"" + iban + "\", \"pin\": \"" + pin + "\", \"pasnummer\": \"" + pasnummer + "\"}";
   }
 
   if (type == "withdraw") {
     url += "withdraw" + param;
-    json = "{\"iban\": "+ iban +",  \"pin\": "+ pin +", \"pasnummer\": "+ pasnummer +", \"amount\": "+ amount +"}";
+    json = "{\"iban\": \"" + iban + "\", \"pin\": \"" + pin + "\", \"pasnummer\": \"" + pasnummer + "\", \"amount\": \"" + amount + "\"}";
   }
-
-  Serial.println("Calling API: " + url);
   
+  Serial.println("Calling API: " + url);
+  Serial.println("Request JSON:");
+  Serial.println(json);
+  
+  http.begin(client, url); // Specify the URL
+  if (urlType == 0) {
+    http.addHeader("NOOB-TOKEN", "7d23088f-5e46-4944-81d4-e99d5c827140"); // shhhhhhhhh you see nothing
+  }
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("Content-Length", String(json.length()));
+
+
+
   int httpCode = http.POST(json);
+  Serial.println("HTTP Response code: " + String(httpCode));
   if (httpCode > 0) { // Check for the returning code
     String payload = http.getString();
     Serial.println("HTTP Response code: " + String(httpCode));
@@ -107,6 +125,7 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
       // show error on the page
       // reset variables
     }
+    http.end();
   }
 }
 
@@ -169,10 +188,12 @@ void setup() {
   // pinMode(right3, INPUT);
 
   // webserver
-  WiFi.softAP(ssid, password);
-  Serial.println("Access Point started");
-  Serial.print("ESP32 Access Point IP address: ");
-  Serial.println(WiFi.softAPIP());
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("Connected to WiFi");
   initWebSocket();
   ws.onEvent(onEvent);
   server.addHandler(&ws);
