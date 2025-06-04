@@ -1,6 +1,10 @@
+// libs
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
+#include <Wire.h>
+
+// paginas
 #include "index.h"
 #include "home.h"
 #include "saldo.h"
@@ -11,11 +15,13 @@
 #include "bonVraag.h"
 #include "biljetOptie.h"
 
-#define button1 27
-#define button2 26
+// user variables
+String iban;
+int pin;
+int pasnummer;
 
-int pin = 1;
 
+// webserver
 const char *ssid = "potatopotatoooooo";     // CHANGE IT
 const char *password = "heelsterkwachtwoord";  // CHANGE IT
 
@@ -58,11 +64,28 @@ void initWebSocket() {
   server.addHandler(&ws);
 }
 
+void Arduino(int msg) {
+  String fromArduino ="";
+  while (Wire.available()) {
+    char c = Wire.read();
+    fromArduino += c;
+  }
+  Serial.println("Arduino received: " + fromArduino);
+}
+
+// arduino code
 void setup() {
   Serial.begin(9600);
-  pinMode(button1, INPUT);
-  pinMode(button2, INPUT);
+  
+  // I2C
+  Wire.begin(4);
+  Wire.onReceive(Arduino);
 
+  // pinMode(right1, INPUT);
+  // pinMode(right2, INPUT);
+  // pinMode(right3, INPUT);
+
+  // webserver
   WiFi.softAP(ssid, password);
   Serial.println("Access Point started");
   Serial.print("ESP32 Access Point IP address: ");
@@ -93,15 +116,30 @@ void setup() {
 
 void loop()
 {
-  if (digitalRead(button1) == HIGH) {
-    Serial.println("card");
-    notifyClients("card:1");
-    delay(500); // Debounce delay
-  }
-  if (digitalRead(button2) == HIGH) {
-    Serial.println("pin" + String(pin));
-    notifyClients("pin:" + String(pin)); // Example pin, replace with actual logic
-    delay(500); // Debounce delay
-    pin += pin * 10; // Simulate pin change for next read
-  }
+  
+  // if (digitalRead(right1) == HIGH) {
+  //   Serial.println("right1");
+  //   delay(500); // Debounce delay
+  // }
+  // if (digitalRead(right2) == HIGH) {
+  //   Serial.println("right2");
+  //   delay(500); // Debounce delay
+  // }
+  // if (digitalRead(right3) == HIGH) {
+  //   Serial.println("right3");
+  //   delay(500); // Debounce delay
+  // }
+
+
+  // if (digitalRead(button1) == HIGH) {
+  //   Serial.println("card");
+  //   notifyClients("card:1");
+  //   delay(500); // Debounce delay
+  // }
+  // if (digitalRead(button2) == HIGH) {
+  //   Serial.println("pin" + String(pin));
+  //   notifyClients("pin:" + String(pin)); // Example pin, replace with actual logic
+  //   delay(500); // Debounce delay
+  //   pin += pin * 10; // Simulate pin change for next read
+  // }
 }
