@@ -15,9 +15,9 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
     <div class="container">
         <div class="button-grid">
             <div class="side-buttons left-button">
-                <button onclick="storeMoneyValue(20)" class="button">€20,-</button>
-                <button onclick="storeMoneyValue(50)" class="button">€50,-</button>
-                <button onclick="window.location.href='home.html';" class="button">Terug</button>
+                <button onclick="storeMoneyValue(20)" class="button" id="20Pin">€20,-</button>
+                <button onclick="storeMoneyValue(50)" class="button" id="50Pin">€50,-</button>
+                <button onclick="window.location.href='home';" class="button" id="terug">Terug</button>
             </div>
 
             <div id="article1">
@@ -25,9 +25,9 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
             </div>
 
             <div class="side-buttons right-button">
-                <button onclick="storeMoneyValue(100)" class="button">€100,-</button>
-                <button id="openPopup" class="button">Eigen keuze</button>
-                <button class="button openAfbrekenBtn">Sessie Afbreken</button>
+                <button onclick="storeMoneyValue(100)" class="button" id= "100Pin">€100,-</button>
+                <button id="openPopup" class="button" id="eigenKeuze">Eigen keuze</button>
+                <button class="button openAfbrekenBtn" id="afbreken">Sessie Afbreken</button>
             </div>
 
 
@@ -80,6 +80,38 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
             }
         });
 
+        
+        const gateway = `ws://${window.location.hostname}/ws`;
+        const websocket = new WebSocket(gateway);
+
+        websocket.onmessage = (event) => {
+            const msg = event.data.split(":");
+                
+            if (msg[0] === "sideBtn") {
+                if (msg[1] === "6") {
+                    document.getElementById('afbreekPopup').style.display = 'flex';
+                }
+                if (msg[1] === "1") {
+                    document.getElementById('20Pin').style.display = 'flex';
+                }   
+                if (msg[1] === "2") {
+                    document.getElementById('50Pin').style.display = 'flex';
+                }
+                if (msg[1] === "3") {
+                    document.getElementById('terug').style.display = 'flex';
+                }  
+                if (msg[1] === "4") {
+                    document.getElementById('100Pin').style.display = 'flex';
+                }
+                if (msg[1] === "5") {
+                    document.getElementById('eigenKeuze').style.display = 'flex';
+                }              
+            }     
+        };
+
+        document.getElementById('afbreken').addEventListener('click', () => {
+            websocket.send("sideBtn:break");
+        });
 
     </script>
 

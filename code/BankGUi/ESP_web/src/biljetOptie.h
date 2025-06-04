@@ -30,7 +30,7 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
       <div class="side-buttons right-button">
         <button onclick="selectBiljetOption('optie2');" class="button" id="Field2">Optie 2</button>
         <button class="button hidden" style="visibility:hidden;"></button>
-        <button class="button openAfbrekenBtn">Sessie Afbreken</button>
+        <button class="button openAfbrekenBtn" id="afbreken">Sessie Afbreken</button>
       </div>
 
       <!-- Popup -->
@@ -43,6 +43,40 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
       </div>
     </div>
   </div>
+
+
+
+  <script> 
+    const gateway = `ws://${window.location.hostname}/ws`;
+    const websocket = new WebSocket(gateway);
+
+    websocket.onmessage = (event) => {
+      const msg = event.data.split(":");
+                    
+      if (msg[0] === "sideBtn") {
+        if (msg[1] === "6") {
+          document.getElementById('afbreekPopup').style.display = 'flex';
+        }
+        if (msg[1] === "1") {
+          document.getElementById('Field1').style.display = 'flex';
+        }
+        if (msg[1] === "2") {
+          document.getElementById('Field3').style.display = 'flex';
+        }     
+        if (msg[1] === "3") {
+          document.getElementById('terug').style.display = 'flex';
+        }    
+        if (msg[1] === "4") {
+          document.getElementById('Field2').style.display = 'flex';
+        }                                            
+      }     
+    };
+
+    document.getElementById('afbreken').addEventListener('click', () => {
+      websocket.send("sideBtn:break");
+    });
+  </script>
+
 </body>
 
 </html>
