@@ -113,11 +113,11 @@ const char geldKeuze_html[] PROGMEM = R"rawliteral(
             window.location.href = 'biljetVraag';
         });
         document.getElementById('50Pin').addEventListener('click', () => {
-            websocket.send("pin20");
+            websocket.send("pin50");
             window.location.href = 'biljetVraag';
         });
         document.getElementById('100Pin').addEventListener('click', () => {
-            websocket.send("pin20");
+            websocket.send("pin100");
             window.location.href = 'biljetVraag';
         });
 

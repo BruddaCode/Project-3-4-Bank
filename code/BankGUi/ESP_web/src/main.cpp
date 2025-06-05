@@ -19,6 +19,7 @@
 // global variables
 String noob_api = "noob.datalabrotterdam.nl/api/noob/users/";
 String local_api = "http://145.24.222.28:9000/api/noob/users/";
+bool calculated = false; // Indicates if the biljet options have been calculated
 
 // user variables
 String iban = "";
@@ -26,6 +27,116 @@ String pasnummer = "";
 String pin = "";
 float saldo = 0.0;
 float amount = 0.0;
+String calculatedBiljetOptie1 = "";
+String calculatedBiljetOptie2 = "";
+String calculatedBiljetOptie3 = "";
+
+// biljet opties
+struct BiljetResult {
+  int b10;
+  int b20;
+  int b50;
+};
+
+BiljetResult optie1;
+BiljetResult optie2;
+BiljetResult optie3;
+
+String calculateOptie1(int bedrag) {
+  BiljetResult optie1 = {0, 0, 0};
+
+  optie1.b50 = bedrag / 50;
+  bedrag %= 50;
+
+  optie1.b20 = bedrag / 20;
+  bedrag %= 20;
+
+  optie1.b10 = bedrag / 10;
+
+  String calculated = "50x" + String(optie1.b50) + "|20x" + String(optie1.b20) + "|10x" + String(optie1.b10);
+  Serial.println("Calculated Optie1: " + calculated);
+
+  return calculated;
+}
+
+String fallbackGreedy(int remaining, BiljetResult result, int aantalTientjes, int maxTientjes) {
+  while (remaining >= 50) {
+    result.b50++;
+    remaining -= 50;
+  }
+  while (remaining >= 20) {
+    result.b20++;
+    remaining -= 20;
+  }
+  while (remaining >= 10 && aantalTientjes < maxTientjes) {
+    result.b10++;
+    aantalTientjes++;
+    remaining -= 10;
+  }
+
+  String calculated = "50x" + String(result.b50) + "|20x" + String(result.b20) + "|10x" + String(result.b10);
+  Serial.println("Fallback Greedy Calculated: " + calculated);
+  return calculated;
+}
+
+// biljet opties berekenen
+String calculateOptie2(int bedrag) {
+  BiljetResult optie2 = {0, 0, 0};
+  int aantalTientjes = 0;
+  int remaining = bedrag;
+  int maxTientjes = 6;
+
+  while (remaining > 0) {
+    std::vector<int> valid;
+    if (remaining >= 50) valid.push_back(50);
+    if (remaining >= 20) valid.push_back(20);
+    if (remaining >= 10 && aantalTientjes < maxTientjes) valid.push_back(10);
+
+    if (valid.empty()) {
+      return fallbackGreedy(remaining, optie2, aantalTientjes, maxTientjes);
+    }
+
+    int keuze = valid[rand() % valid.size()];
+
+    switch (keuze) {
+      case 50: optie2.b50++; break;
+      case 20: optie2.b20++; break;
+      case 10: optie2.b10++; aantalTientjes++; break;
+    }
+
+    remaining -= keuze;
+  }
+  String calculated = "50x" + String(optie2.b50) + "|20x" + String(optie2.b20) + "|10x" + String(optie2.b10);
+  Serial.println("Calculated Optie2: " + calculated);
+
+  return calculated;
+}
+
+String calculateOptie3(int bedrag) {
+  BiljetResult optie3 = {0, 0, 0};
+  int remaining = bedrag;
+
+  while (remaining > 0) {
+    std::vector<int> valid;
+    if (remaining >= 50) valid.push_back(50);
+    if (remaining >= 20) valid.push_back(20);
+    if (remaining >= 10) valid.push_back(10);
+
+    int keuze = valid[rand() % valid.size()];
+
+    switch (keuze) {
+      case 50: optie3.b50++; break;
+      case 20: optie3.b20++; break;
+      case 10: optie3.b10++; break;
+    }
+
+    remaining -= keuze;
+  }
+  String calculated = "50x" + String(optie3.b50) + "|20x" + String(optie3.b20) + "|10x" + String(optie3.b10);
+  Serial.println("Calculated Optie3: " + calculated);
+
+  return calculated;
+}
 
 // webserver
 const char *ssid = "Samsung Smart Fridge";
@@ -39,66 +150,8 @@ void notifyClients(String msg) {
   ws.textAll(msg);
 }
 
-// ontvangt berichten die verstuurd zijn vanuit de website
-void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
-  AwsFrameInfo *info = (AwsFrameInfo*)arg;
-  if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
-    String msg = "";
-    for (size_t i = 0; i < len; i++) {
-      msg += (char) data[i];
-    }
-    if (msg == "getSaldo") {
-      notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
-    }
-    if (msg == "break") {
-      iban = "";
-      pasnummer = "";
-      pin = "";
-      saldo = 0.0;
-      amount = 0.0;
-    }
-    if (msg == "pin20") {
-      amount = 20.0;
-    }
-    if (msg == "pin50") {
-      amount = 50.0;
-    }
-    if (msg == "pin70") {
-      amount = 70.0;
-    }
-    if (msg == "pin100") {
-      amount = 100.0;
-    }
-    if (msg == "getAmount") {
-      notifyClients("amount:" + String(amount, 2)); // Notify clients with the current amount
-    }
-
-    
-  }
-}
-
-void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
-  switch (type) {
-    case WS_EVT_CONNECT:
-      Serial.printf("Client connected: %u\n", client->id());
-      break;
-    case WS_EVT_DISCONNECT:
-      Serial.printf("Client disconnected: %u\n", client->id());
-      break;
-    case WS_EVT_DATA:
-      handleWebSocketMessage(arg, data, len);
-      break;
-    default:
-      break;
-  }
-}
-
-void initWebSocket() {
-  ws.onEvent(onEvent);
-  server.addHandler(&ws);
-}
-
-void callApi(String type, String iban, String pasnummer, String pin, String amount) {
+// functie om de API aan te roepen
+int callApi(String type, String iban, String pasnummer, String pin, String amount) {
   HTTPClient http;
   WiFiClient client;
   String url = "";
@@ -161,10 +214,100 @@ void callApi(String type, String iban, String pasnummer, String pin, String amou
       // show error on the page
       // reset variables
       // notifyClients("error:An error occurred while processing your request. Please try again.");
-
     }
     http.end();
+    return httpCode;
   }
+}
+
+// ontvangt berichten die verstuurd zijn vanuit de website
+void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
+  AwsFrameInfo *info = (AwsFrameInfo*)arg;
+  if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
+    String msg = "";
+    for (size_t i = 0; i < len; i++) {
+      msg += (char) data[i];
+    }
+    if (msg == "getSaldo") {
+      notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
+    }
+    if (msg == "break") {
+      iban = "";
+      pasnummer = "";
+      pin = "";
+      saldo = 0.0;
+      amount = 0.0;
+    }
+    if (msg == "pin20") {
+      amount = 20.0;
+      calculatedBiljetOptie1 = calculateOptie1(amount);
+      calculatedBiljetOptie2 = calculateOptie2(amount);
+      calculatedBiljetOptie3 = calculateOptie3(amount);
+    }
+    if (msg == "pin50") {
+      amount = 50.0;
+      calculatedBiljetOptie1 = calculateOptie1(amount);
+      calculatedBiljetOptie2 = calculateOptie2(amount);
+      calculatedBiljetOptie3 = calculateOptie3(amount);
+    }
+    if (msg == "pin70") {
+      amount = 70.0;
+      calculatedBiljetOptie1 = calculateOptie1(amount);
+      calculatedBiljetOptie2 = calculateOptie2(amount);
+      calculatedBiljetOptie3 = calculateOptie3(amount);
+    }
+    if (msg == "pin100") {
+      amount = 100.0;
+      calculatedBiljetOptie1 = calculateOptie1(amount);
+      calculatedBiljetOptie2 = calculateOptie2(amount);
+      calculatedBiljetOptie3 = calculateOptie3(amount);
+    }
+    if (msg == "getAmount") {
+      notifyClients("amount:" + String(amount, 2)); // Notify clients with the current amount
+    }
+    if (msg == "optie1") {
+      int code = callApi("withdraw", iban, pasnummer, pin, String(amount));
+      if (code != 409) {
+        // gooi met geld
+      }
+    }
+    if (msg == "optie2") {
+      int code = callApi("withdraw", iban, pasnummer, pin, String(amount));
+      if (code != 409) {
+        // gooi met geld
+      }
+    }
+    if (msg == "optie3") {
+      int code = callApi("withdraw", iban, pasnummer, pin, String(amount));
+      if (code != 409) {
+        // gooi met geld
+      }
+    }
+    if (msg == "bon") {
+      // print bon
+    }
+  }
+}
+
+void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
+  switch (type) {
+    case WS_EVT_CONNECT:
+      Serial.printf("Client connected: %u\n", client->id());
+      break;
+    case WS_EVT_DISCONNECT:
+      Serial.printf("Client disconnected: %u\n", client->id());
+      break;
+    case WS_EVT_DATA:
+      handleWebSocketMessage(arg, data, len);
+      break;
+    default:
+      break;
+  }
+}
+
+void initWebSocket() {
+  ws.onEvent(onEvent);
+  server.addHandler(&ws);
 }
 
 // leest de data van de arduino via I2C
@@ -254,9 +397,15 @@ void setup() {
 
 void loop()
 {
+  if (amount > 0) {
+    notifyClients("optie1:" + calculatedBiljetOptie1);
+    notifyClients("optie2:" + calculatedBiljetOptie2); 
+    notifyClients("optie3:" + calculatedBiljetOptie3);
+  }
 
   notifyClients("amount:" + String(amount, 2)); // Notify clients with the current amount
   notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
+ 
   delay(1000); // Adjust the delay as needed
   
   // if (digitalRead(right1) == HIGH) {

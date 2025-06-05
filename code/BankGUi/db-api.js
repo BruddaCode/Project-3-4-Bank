@@ -60,9 +60,9 @@ app.post('/api/noob/users/withdraw', (req, res) => {
     const requestData = checkJson(req.body, res)
     if (!requestData) return
 
-    const { iban, pin, amount } = requestData
+    const { iban, pin, pasnummer, amount } = requestData
 
-    validateAccount(iban, pin, res, (account) => {
+    validateAccount(iban, pin, pasnummer, res, (account) => {
         if (amount > account.saldo) {
             return res.status(409).json({ error: "Insufficient funds" })
         }

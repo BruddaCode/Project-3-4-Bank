@@ -8,14 +8,14 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0 , user-scalable=no">
     <link rel="stylesheet" type="text/css" href="opmaak.css" />
     <title>biljet optie</title>
-</head>
+</head
 
 <body>
   <div class="container">
     <div class="button-grid">
       <div class="side-buttons left-button">
-        <button onclick="selectBiljetOption('optie1');" class="button" id="Field1">Optie 1</button>
-        <button onclick="selectBiljetOption('optie3');" class="button" id="Field3">Optie 3</button>
+        <button class="button" id="Field1">Optie 1</button>
+        <button class="button" id="Field3">Optie 3</button>
         <button onclick="window.location.href='geldKeuze';" class="button" id="terug">Terug</button>
       </div>
 
@@ -27,7 +27,7 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
       </div>
 
       <div class="side-buttons right-button">
-        <button onclick="selectBiljetOption('optie2');" class="button" id="Field2">Optie 2</button>
+        <button class="button" id="Field2">Optie 2</button>
         <button class="button hidden" style="visibility:hidden;"></button>
         <button class="button openAfbrekenBtn" id="afbreken">Sessie Afbreken</button>
       </div>
@@ -54,6 +54,16 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
 
       if (msg[0] === "amount") {
         document.getElementById('biljetValue').innerText = msg[1];
+      }
+
+      if (msg[0] === "optie1") {
+        document.getElementById('Field1').innerText = msg[1];
+      }
+      if (msg[0] === "optie2") {
+        document.getElementById('Field2').innerText = msg[1];
+      }
+      if (msg[0] === "optie3") {
+        document.getElementById('Field3').innerText = msg[1];
       }
                     
       if (msg[0] === "sideBtn") {
@@ -82,6 +92,19 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     document.getElementById('bevestig_afbreken').addEventListener('click', () => {
         websocket.send("break");
         window.location.href = '/';
+    });
+
+    document.getElementById('Field1').addEventListener('click', () => {
+      websocket.send("optie1");
+      window.location.href = 'bonVraag';
+    });
+    document.getElementById('Field2').addEventListener('click', () => {
+      websocket.send("optie2");
+      window.location.href = 'bonVraag';
+    });
+    document.getElementById('Field3').addEventListener('click', () => {
+      websocket.send("optie3");
+      window.location.href = 'bonVraag';
     });
   </script>
 

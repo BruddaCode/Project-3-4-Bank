@@ -1,9 +1,9 @@
 #define disp1_1 26
 #define disp1_2 25
-#define disp2_1 24
-#define disp2_2 23 
-#define disp3_1 22
-#define disp3_2 21
+#define disp2_1 33
+#define disp2_2 32 
+#define disp3_1 14
+#define disp3_2 27
 
 void setup() {
   pinMode(disp1_1, OUTPUT);
@@ -21,7 +21,7 @@ void loop() {
   push(1);
   push(2);
   push(3);
-  delay(6000);
+  delay(3000);
   pull(1);
   pull(2);
   pull(3);
