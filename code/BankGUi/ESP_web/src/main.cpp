@@ -254,6 +254,10 @@ void setup() {
 
 void loop()
 {
+
+  notifyClients("amount:" + String(amount, 2)); // Notify clients with the current amount
+  notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
+  delay(1000); // Adjust the delay as needed
   
   // if (digitalRead(right1) == HIGH) {
   //   Serial.println("right1");

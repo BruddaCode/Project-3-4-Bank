@@ -59,13 +59,6 @@ const char saldo_html[] PROGMEM = R"rawliteral(
         const gateway = `ws://${window.location.hostname}/ws`;
         const websocket = new WebSocket(gateway);
 
-        window.addEventListener('load', onload);
-
-        function onload(event) {
-            websocket.send("getSaldo");
-        }
-
-
         document.getElementById('afbreken').addEventListener('click', () => {
             websocket.send("break");
         });

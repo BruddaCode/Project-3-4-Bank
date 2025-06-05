@@ -28,7 +28,7 @@ app.get('/api/noob/health', (req, res) => {
 
 // Common function for account validation
 function validateAccount(iban, pin, pasnummer, res, callback) {
-    db.query('SELECT * FROM rekeningen WHERE iban = ? AND pasnr = ?', [iban, pasnummer], (err, result) => {
+    db.query('SELECT * FROM rekeningen WHERE iban = ?', [iban], (err, result) => {
         if (err) return res.status(500).json({ error: err })
         if (!result[0]) return res.status(404).json({ error: "Can't find user" })
 

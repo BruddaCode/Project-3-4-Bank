@@ -49,12 +49,6 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     const gateway = `ws://${window.location.hostname}/ws`;
     const websocket = new WebSocket(gateway);
 
-    window.addEventListener('load', onload);
-
-    function onload(event) {
-      websocket.send("getAmount");
-    }
-
     websocket.onmessage = (event) => {
       const msg = event.data.split(":");
 
