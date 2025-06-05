@@ -5,6 +5,8 @@
 #include <Wire.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <Adafruit_Thermal.h>
+#include <HardwareSerial.h>
 
 // paginas
 #include "index.h"
@@ -20,6 +22,12 @@
 String noob_api = "noob.datalabrotterdam.nl/api/noob/users/";
 String local_api = "http://145.24.222.28:9000/api/noob/users/";
 bool calculated = false; // Indicates if the biljet options have been calculated
+
+// bon printer
+#define RX_PIN 16
+#define TX_PIN 17
+HardwareSerial mySerial(1);
+Adafruit_Thermal printer(&mySerial);
 
 // user variables
 String iban = "";
@@ -220,6 +228,31 @@ int callApi(String type, String iban, String pasnummer, String pin, String amoun
   }
 }
 
+// functie voor de bonprinter
+void printBon() {
+  printer.feed(2); // Feed a few lines
+  printer.justify('L');
+  printer.setSize('L');
+  printer.boldOn();
+  printer.println("SYMPLE");
+  printer.boldOff();
+  printer.justify('C');
+  printer.setSize('M');
+  printer.println("--------------------------------");
+  printer.setSize('M');
+  printer.justify('C');
+  printer.setLineHeight(10);
+  printer.println("OPNAME BILJETTEN");
+  printer.setLineHeight();
+  printer.justify('L');
+  printer.setSize('S');
+  printer.println("DATUM\t\tTIJD\t\tAUTOMAAT");
+  printer.print("9/11/2001");
+  printer.print("\t");
+  printer.print("10:00:00");
+  printer.println("\t\t1");
+}
+
 // ontvangt berichten die verstuurd zijn vanuit de website
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
@@ -360,6 +393,12 @@ void Arduino(int msg) {
 void setup() {
   Serial.begin(9600);
   
+  // bon printer
+  mySerial.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);
+  printer.begin();
+  printer.setFont('B');
+  printer.setFont('A');
+
   // I2C
   Wire.begin(4);
   Wire.onReceive(Arduino);
