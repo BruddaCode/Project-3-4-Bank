@@ -46,8 +46,7 @@ const char saldo_html[] PROGMEM = R"rawliteral(
                     
                     
                         <button onclick="" class="button hidden">button 4</button>
-                        <button onclick="clearStoredData(); window.location.href='index';" class="button"
-                            id="miniJa">Ja</button>
+                        <button id="bevestig_afbreken" class="button" id="miniJa">Ja</button>
                         <button onclick="" class="button hidden">button 6</button>
                     
 
@@ -59,10 +58,6 @@ const char saldo_html[] PROGMEM = R"rawliteral(
     <script> 
         const gateway = `ws://${window.location.hostname}/ws`;
         const websocket = new WebSocket(gateway);
-
-        window.onload = () => {
-            websocket.send("getSaldo");
-        };
 
         document.getElementById('afbreken').addEventListener('click', () => {
             websocket.send("break");
@@ -84,6 +79,15 @@ const char saldo_html[] PROGMEM = R"rawliteral(
                 document.getElementById('saldoValue').innerHTML = msg[1];                             
             }     
         };
+
+        document.getElementById('afbreken').addEventListener('click', () => {
+                    document.getElementById('afbreekPopup').style.display = 'flex';
+                });
+
+        document.getElementById('bevestig_afbreken').addEventListener('click', () => {
+            websocket.send("break");
+            window.location.href = '/';
+        });
 
     </script>
 </body>

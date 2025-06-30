@@ -28,7 +28,7 @@ app.get('/api/noob/health', (req, res) => {
 
 // Common function for account validation
 function validateAccount(iban, pin, pasnummer, res, callback) {
-    db.query('SELECT * FROM rekeningen WHERE iban = ? AND pasnr = ?', [iban, pasnummer], (err, result) => {
+    db.query('SELECT * FROM rekeningen WHERE iban = ?', [iban], (err, result) => {
         if (err) return res.status(500).json({ error: err })
         if (!result[0]) return res.status(404).json({ error: "Can't find user" })
 
@@ -41,7 +41,7 @@ function validateAccount(iban, pin, pasnummer, res, callback) {
     })
 }
 
-app.post('/api/noob/users/getinfo', (req, res) => {
+app.post('/api/users/getinfo', (req, res) => {
     // print request body for debugging
     console.log('Request body:', req.body)
     const requestData = checkJson(req.body, res)
@@ -55,14 +55,14 @@ app.post('/api/noob/users/getinfo', (req, res) => {
     })
 })
 
-app.post('/api/noob/users/withdraw', (req, res) => {
+app.post('/api/users/withdraw', (req, res) => {
     console.log('Request body:', req.body)
     const requestData = checkJson(req.body, res)
     if (!requestData) return
 
-    const { iban, pin, amount } = requestData
+    const { iban, pin, pasnummer, amount } = requestData
 
-    validateAccount(iban, pin, res, (account) => {
+    validateAccount(iban, pin, pasnummer, res, (account) => {
         if (amount > account.saldo) {
             return res.status(409).json({ error: "Insufficient funds" })
         }
