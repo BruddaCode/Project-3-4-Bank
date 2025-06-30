@@ -34,7 +34,7 @@ const char bonVraag_html[] PROGMEM = R"rawliteral(
 
             <div class="side-buttons right-button">
                 <button onclick="" class="button hidden">button 4</button>
-                <button window.location.href='/';" class="button" id="ja">Ja</button>
+                <button class="button" id="ja">Ja</button>
                 <button onclick="" class="button hidden">button 5</button>
             </div>
         </div>
@@ -57,6 +57,16 @@ const char bonVraag_html[] PROGMEM = R"rawliteral(
                 }
             }     
         };
+
+        document.getElementById('ja').addEventListener('click', () => {
+            websocket.send("bon");
+            window.location.href = '/';
+        });
+
+        document.getElementById('nee').addEventListener('click', () => {
+            websocket.send("break");
+            window.location.href = '/';
+        });
 
         document.getElementById('afbreken').addEventListener('click', () => {
                     document.getElementById('afbreekPopup').style.display = 'flex';
