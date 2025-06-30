@@ -1,15 +1,17 @@
-#define disp1_1 26
-#define disp1_2 25
-#define disp2_1 33
-#define disp2_2 32 
-#define disp3_1 14
-#define disp3_2 27
+#define disp1_1 25
+#define disp1_2 26
+#define disp2_1 14
+#define disp2_2 27 
+#define disp3_1 33
+#define disp3_2 32
+
+// 33 32 14 27
 
 void setup() {
-  pinMode(disp1_1, OUTPUT);
-  pinMode(disp1_2, OUTPUT);
-  pinMode(disp2_1, OUTPUT);
-  pinMode(disp2_2, OUTPUT);
+  // pinMode(disp1_1, OUTPUT);
+  // pinMode(disp1_2, OUTPUT);
+  // pinMode(disp2_1, OUTPUT);
+  // pinMode(disp2_2, OUTPUT);
   pinMode(disp3_1, OUTPUT);
   pinMode(disp3_2, OUTPUT);
 
@@ -26,8 +28,8 @@ void loop() {
   pull(2);
   pull(3);
   delay(1000);
-  stop(4);
-  delay(2000);
+  // stop(4);
+  // delay(2000);
 }
 
 void push(int dispenser){

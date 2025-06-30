@@ -52,18 +52,18 @@ const char biljetOptie_html[] PROGMEM = R"rawliteral(
     websocket.onmessage = (event) => {
       const msg = event.data.split(":");
 
-      if (msg[0] === "amount") {
-        document.getElementById('biljetValue').innerText = msg[1];
+      if (msg[2] === "amount") {
+        document.getElementById('biljetValue').innerText = msg[3];
       }
 
-      if (msg[0] === "optie1") {
-        document.getElementById('Field1').innerText = msg[1];
+      if (msg[4] === "optie1") {
+        document.getElementById('Field1').innerText = msg[5];
       }
-      if (msg[0] === "optie2") {
-        document.getElementById('Field2').innerText = msg[1];
+      if (msg[6] === "optie2") {
+        document.getElementById('Field2').innerText = msg[7];
       }
-      if (msg[0] === "optie3") {
-        document.getElementById('Field3').innerText = msg[1];
+      if (msg[8] === "optie3") {
+        document.getElementById('Field3').innerText = msg[9];
       }
                     
       if (msg[0] === "sideBtn") {

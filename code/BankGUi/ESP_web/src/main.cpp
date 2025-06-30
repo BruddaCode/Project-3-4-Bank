@@ -30,12 +30,12 @@ HardwareSerial mySerial(1);
 Adafruit_Thermal printer(&mySerial);
 
 // geld dispenser
-#define disp1_1 26
-#define disp1_2 25
-#define disp2_1 33
-#define disp2_2 32 
-#define disp3_1 14
-#define disp3_2 27
+#define disp1_1 25
+#define disp1_2 26
+#define disp2_1 14
+#define disp2_2 27 
+#define disp3_1 33
+#define disp3_2 32
 
 // user variables
 String iban = "";
@@ -58,9 +58,8 @@ BiljetResult optie1;
 BiljetResult optie2;
 BiljetResult optie3;
 
+// biljet opties berekenen
 String calculateOptie1(int bedrag) {
-  BiljetResult optie1 = {0, 0, 0};
-
   optie1.b50 = bedrag / 50;
   bedrag %= 50;
 
@@ -95,9 +94,7 @@ String fallbackGreedy(int remaining, BiljetResult result, int aantalTientjes, in
   return calculated;
 }
 
-// biljet opties berekenen
 String calculateOptie2(int bedrag) {
-  BiljetResult optie2 = {0, 0, 0};
   int aantalTientjes = 0;
   int remaining = bedrag;
   int maxTientjes = 6;
@@ -129,7 +126,6 @@ String calculateOptie2(int bedrag) {
 }
 
 String calculateOptie3(int bedrag) {
-  BiljetResult optie3 = {0, 0, 0};
   int remaining = bedrag;
 
   while (remaining > 0) {
@@ -237,61 +233,65 @@ int callApi(String type, String iban, String pasnummer, String pin, String amoun
 }
 
 // functie voor de bonprinter
-void printBon() {
-  printer.feed(2); // Feed a few lines
-  printer.justify('L');
-  printer.setSize('L');
-  printer.boldOn();
-  printer.println("SYMPLE");
-  printer.boldOff();
-  printer.justify('C');
-  printer.setSize('M');
-  printer.println("--------------------------------");
-  printer.setSize('M');
-  printer.justify('C');
-  printer.setLineHeight(10);
-  printer.println("OPNAME BILJETTEN");
-  printer.setLineHeight();
+struct PrintJob {
+  String line;
+  uint8_t size;
+  char justify;
+  bool bold;
+};
 
-  // datum
-  printer.feed(1);
-  printer.justify('L');
-  printer.setSize('S');
-  printer.println("DATUM\t\tTIJD\t\tAUTOMAAT");
-  printer.print("9/11/2001");
-  printer.print("\t");
-  printer.print("10:00:00");
-  printer.println("\t\t1");
+PrintJob printQueue[30];  // adjust for max lines
+int queueLength = 0;
+int currentLine = 0;
+bool printing = false;
+unsigned long lastPrintTime = 0;
+const unsigned long lineDelay = 50;  // ms between lines
 
-  // saldo
-  printer.feed(1);
-  printer.println("REKENINGNUMMER\t\t\tPASNR");
-  printer.print("NLxx SMPL xxxx xx");
-  printer.print(iban);
-  printer.print("\t");
-  printer.println(pasnummer);
+void prepareBon() {
+  queueLength = 0;
+  currentLine = 0;
+  printing = true;
 
-  // transactie details
-  printer.feed(1);
-  printer.print("TRANSACTIE ID\t\t:\t");
-  printer.println("1234567890");
+  printQueue[queueLength++] = {"", 'L', 'L', false}; // feed
+  printQueue[queueLength++] = {"SYMPLE", 'L', 'L', true};
+  printQueue[queueLength++] = {"--------------------------------", 'M', 'C', false};
+  printQueue[queueLength++] = {"OPNAME BILJETTEN", 'M', 'C', false};
+  printQueue[queueLength++] = {"", 'S', 'L', false};
+  printQueue[queueLength++] = {"DATUM    TIJD    AUTOMAAT", 'S', 'L', false};
+  printQueue[queueLength++] = {"9/11/2001    10:00:00    1", 'S', 'L', false};
+  printQueue[queueLength++] = {"REKENINGNUMMER     PASNR", 'S', 'L', false};
+  printQueue[queueLength++] = {"NLxx SMPL xxxx xx" + iban + "\t" + pasnummer, 'S', 'L', false};
+  printQueue[queueLength++] = {"TRANSACTIE ID    : 1234567890", 'S', 'L', false};
+  printQueue[queueLength++] = {"BEDRAG           : " + String(amount, 2) + " CFA", 'S', 'L', false};
+  printQueue[queueLength++] = {"TRANSACTIE KOSTEN: €10.000,00", 'S', 'L', false};
+  printQueue[queueLength++] = {"TOT ZIENS", 'M', 'C', false};
+}
 
-  // biljetten
-  printer.feed(1);
-  printer.print("BEDRAG\t\t\t\t:\t");
-  printer.println(String(amount, 2) + " CFA");
-  printer.print("TRANSACTIE KOSTEN\t:\t");
-  printer.println("€10.000,00");
+void handlePrinter() {
+  if (!printing || currentLine >= queueLength) return;
 
-  printer.feed(2);
-  printer.setSize('M');
-  printer.justify('C');
-  printer.println("TOT ZIENS");
-  printer.feed(4);
+  if (millis() - lastPrintTime < lineDelay) return;
+
+  PrintJob& job = printQueue[currentLine];
+
+  printer.setSize(job.size);
+  printer.justify(job.justify);
+  if (job.bold) printer.boldOn();
+  else printer.boldOff();
+  printer.println(job.line);
+
+  currentLine++;
+  lastPrintTime = millis();
+
+  if (currentLine >= queueLength) {
+    printer.feed(4);
+    printing = false;
+  }
 }
 
 // geld dispenser functies
 void push(int dispenser){
+  Serial.println("Pushing dispenser " + String(dispenser));
   switch(dispenser) {
     case 1:
       digitalWrite(disp1_1, LOW);
@@ -309,6 +309,7 @@ void push(int dispenser){
 }
 
 void pull(int dispenser){
+  Serial.println("Pulling dispenser " + String(dispenser));
   switch(dispenser) {
     case 1:
       digitalWrite(disp1_1, HIGH);
@@ -326,6 +327,7 @@ void pull(int dispenser){
 }
 
 void stop(int dispenser){
+  Serial.println("Stopping dispenser " + String(dispenser));
   switch(dispenser) {
     case 1:
       digitalWrite(disp1_1, LOW);
@@ -350,95 +352,90 @@ void stop(int dispenser){
   }
 }
 
-void biljetDispenser(String optie) {
+enum DispenserPhase { IDLE, PUSHING, PULLING };
+
+struct Dispenser {
+  int b10;
+  int b20;
+  int b50;
+  bool isActive;
+
+  DispenserPhase phase = IDLE;
+  unsigned long phaseStart = 0;
+  int currentChannel = 0;  // 1 = b50, 2 = b20, 3 = b10
+};
+
+Dispenser dispenser;
+
+void startDispenser(const String& optie) {
+  Serial.println("optie1 | b10: " + String(optie1.b10) + ", b20: " + String(optie1.b20) + ", b50: " + String(optie1.b50));
+  Serial.println("optie2 | b10: " + String(optie2.b10) + ", b20: " + String(optie2.b20) + ", b50: " + String(optie2.b50));
+  Serial.println("optie3 | b10: " + String(optie3.b10) + ", b20: " + String(optie3.b20) + ", b50: " + String(optie3.b50));
   if (optie == "optie1") {
-    // Dispenser 1
-    if (calculatedBiljetOptie1.indexOf("50x") > -1) {
-      int b50 = calculatedBiljetOptie1.substring(calculatedBiljetOptie1.indexOf("50x") + 3, calculatedBiljetOptie1.indexOf("|")).toInt();
-      for (int i = 0; i < b50; i++) {
-        push(1);
-        delay(3000);
-        pull(1);
-        delay(1000);
-      }
-    }
-    if (calculatedBiljetOptie1.indexOf("20x") > -1) {
-      int b20 = calculatedBiljetOptie1.substring(calculatedBiljetOptie1.indexOf("20x") + 3, calculatedBiljetOptie1.lastIndexOf("|")).toInt();
-      for (int i = 0; i < b20; i++) {
-        push(2);
-        delay(3000);
-        pull(2);
-        delay(1000);
-      }
-    }
-    if (calculatedBiljetOptie1.indexOf("10x") > -1) {
-      int b10 = calculatedBiljetOptie1.substring(calculatedBiljetOptie1.lastIndexOf("10x") + 3).toInt();
-      for (int i = 0; i < b10; i++) {
-        push(3);
-        delay(3000);
-        pull(3);
-        delay(1000);
-      }
-    }
+    dispenser.b10 = optie1.b10;
+    dispenser.b20 = optie1.b20;
+    dispenser.b50 = optie1.b50;
+  } else if (optie == "optie2") {
+    dispenser.b10 = optie2.b10;
+    dispenser.b20 = optie2.b20;
+    dispenser.b50 = optie2.b50;
+  } else if (optie == "optie3") {
+    dispenser.b10 = optie3.b10;
+    dispenser.b20 = optie3.b20;
+    dispenser.b50 = optie3.b50;
+  } else {
+    Serial.println("Invalid option: " + optie);
+    return;
   }
-  if (optie == "optie2") {
-    // Dispenser 1
-    if (calculatedBiljetOptie2.indexOf("50x") > -1) {
-      int b50 = calculatedBiljetOptie2.substring(calculatedBiljetOptie2.indexOf("50x") + 3, calculatedBiljetOptie2.indexOf("|")).toInt();
-      for (int i = 0; i < b50; i++) {
-        push(1);
-        delay(3000);
-        pull(1);
-        delay(1000);
-      }
+  dispenser.isActive = true;
+  dispenser.phase = IDLE;
+  dispenser.currentChannel = 0;
+}
+
+void rammelGeldUitAutomaat() {
+  if (dispenser.isActive == false) return;
+  unsigned long now = millis();
+  
+  if (dispenser.phase == IDLE) {
+    // Pick next available bill
+    if (dispenser.b50 > 0) {
+      dispenser.currentChannel = 1;
+      dispenser.b50--;
+    } else if (dispenser.b20 > 0) {
+      dispenser.currentChannel = 2;
+      dispenser.b20--;
+    } else if (dispenser.b10 > 0) {
+      dispenser.currentChannel = 3;
+      dispenser.b10--;
+    } else {
+      // Done
+      stop(4);
+      dispenser.isActive = false;
+      dispenser.currentChannel = 0;
+      Serial.println("All money dispensed, stopping dispensers.");
+      return;
     }
-    if (calculatedBiljetOptie2.indexOf("20x") > -1) {
-      int b20 = calculatedBiljetOptie2.substring(calculatedBiljetOptie2.indexOf("20x") + 3, calculatedBiljetOptie2.lastIndexOf("|")).toInt();
-      for (int i = 0; i < b20; i++) {
-        push(2);
-        delay(3000);
-        pull(2);
-        delay(1000);
-      }
+
+    // Start push phase
+    dispenser.phaseStart = now;
+    dispenser.phase = PUSHING;
+    push(dispenser.currentChannel);
+
+  } else if (dispenser.phase == PUSHING) {
+    if (now - dispenser.phaseStart >= 3000) {
+      dispenser.phaseStart = now;
+      dispenser.phase = PULLING;
+      pull(dispenser.currentChannel);
+    } else {
+      push(dispenser.currentChannel); // Optional repeated call if needed
     }
-    if (calculatedBiljetOptie2.indexOf("10x") > -1) {
-      int b10 = calculatedBiljetOptie2.substring(calculatedBiljetOptie2.lastIndexOf("10x") + 3).toInt();
-      for (int i = 0; i < b10; i++) {
-        push(3);
-        delay(3000);
-        pull(3);
-        delay(1000);
-      }
-    }
-  }
-  if (optie == "optie3") {
-    // Dispenser 1
-    if (calculatedBiljetOptie3.indexOf("50x") > -1) {
-      int b50 = calculatedBiljetOptie3.substring(calculatedBiljetOptie3.indexOf("50x") + 3, calculatedBiljetOptie3.indexOf("|")).toInt();
-      for (int i = 0; i < b50; i++) {
-        push(1);
-        delay(3000);
-        pull(1);
-        delay(1000);
-      }
-    }
-    if (calculatedBiljetOptie3.indexOf("20x") > -1) {
-      int b20 = calculatedBiljetOptie3.substring(calculatedBiljetOptie3.indexOf("20x") + 3, calculatedBiljetOptie3.lastIndexOf("|")).toInt();
-      for (int i = 0; i < b20; i++) {
-        push(2);
-        delay(3000);
-        pull(2);
-        delay(1000);
-      }
-    }
-    if (calculatedBiljetOptie3.indexOf("10x") > -1) {
-      int b10 = calculatedBiljetOptie3.substring(calculatedBiljetOptie3.lastIndexOf("10x") + 3).toInt();
-      for (int i = 0; i < b10; i++) {
-        push(3);
-        delay(3000);
-        pull(3);
-        delay(1000);
-      }
+
+  } else if (dispenser.phase == PULLING) {
+    if (now - dispenser.phaseStart >= 1000) {
+      dispenser.phase = IDLE; // Ready for next bill
+      stop(dispenser.currentChannel);  // ✅ Stop motor after pull
+    } else {
+      pull(dispenser.currentChannel); // Optional repeated call
     }
   }
 }
@@ -460,6 +457,12 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       pin = "";
       saldo = 0.0;
       amount = 0.0;
+      calculatedBiljetOptie1 = "";
+      calculatedBiljetOptie2 = "";
+      calculatedBiljetOptie3 = "";
+      optie1 = {0, 0, 0};
+      optie2 = {0, 0, 0};
+      optie3 = {0, 0, 0};
     }
     if (msg == "pin20") {
       amount = 20.0;
@@ -491,23 +494,26 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     if (msg == "optie1") {
       int code = callApi("withdraw", iban, pasnummer, pin, String(amount));
       if (code != 409) {
-        biljetDispenser("optie1");
+        Serial.println("Starting dispenser for optie1 with amount: " + String(amount));
+        startDispenser("optie1");
       }
     }
     if (msg == "optie2") {
       int code = callApi("withdraw", iban, pasnummer, pin, String(amount));
       if (code != 409) {
-        biljetDispenser("optie2");
+        Serial.println("Starting dispenser for optie2 with amount: " + String(amount));
+        startDispenser("optie2");
       }
     }
     if (msg == "optie3") {
       int code = callApi("withdraw", iban, pasnummer, pin, String(amount));
       if (code != 409) {
-        biljetDispenser("optie3");
+        Serial.println("Starting dispenser for optie3 with amount: " + String(amount));
+        startDispenser("optie3");
       }
     }
     if (msg == "bon") {
-      printBon(); // Print the receipt
+      prepareBon();
     }
   }
 }
@@ -635,42 +641,22 @@ void setup() {
   server.begin();
 }
 
+unsigned long lastMillis = 0; // Variable to store the last time the loop was executed
+
 void loop()
 {
-  if (amount > 0) {
-    notifyClients("optie1:" + calculatedBiljetOptie1);
-    notifyClients("optie2:" + calculatedBiljetOptie2); 
-    notifyClients("optie3:" + calculatedBiljetOptie3);
+  if (millis() - lastMillis >= 500) {
+    lastMillis = millis(); // Update the lastMillis to the current time
+    notifyClients("saldo:" + String(saldo, 2) + ":" +
+                  "amount:" + String(amount, 2) + ":" +
+                  "optie1:" + calculatedBiljetOptie1 + ":" +
+                  "optie2:" + calculatedBiljetOptie2 + ":" +
+                  "optie3:" + calculatedBiljetOptie3);
   }
 
-  notifyClients("amount:" + String(amount, 2)); // Notify clients with the current amount
-  notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
- 
-  delay(1000); // Adjust the delay as needed
-  
-  // if (digitalRead(right1) == HIGH) {
-  //   Serial.println("right1");
-  //   delay(500); // Debounce delay
-  // }
-  // if (digitalRead(right2) == HIGH) {
-  //   Serial.println("right2");
-  //   delay(500); // Debounce delay
-  // }
-  // if (digitalRead(right3) == HIGH) {
-  //   Serial.println("right3");
-  //   delay(500); // Debounce delay
-  // }
+  // bon
+  handlePrinter();
 
-
-  // if (digitalRead(button1) == HIGH) {
-  //   Serial.println("card");
-  //   notifyClients("card:1");
-  //   delay(500); // Debounce delay
-  // }
-  // if (digitalRead(button2) == HIGH) {
-  //   Serial.println("pin" + String(pin));
-  //   notifyClients("pin:" + String(pin)); // Example pin, replace with actual logic
-  //   delay(500); // Debounce delay
-  //   pin += pin * 10; // Simulate pin change for next read
-  // }
+  // geld
+  rammelGeldUitAutomaat();
 }
