@@ -16,7 +16,7 @@ const char biljetVraag_html[] PROGMEM = R"rawliteral(
         <div class="button-grid">
             <div class="side-buttons left-button">
                 <button onclick="" class="button hidden">Button 1</button>
-                <button onclick="window.location.href='bonVraag'; " class="button" id="biljetNee">Nee</button>
+                <button class="button" id="biljetNee">Nee</button>
                 <button onclick="window.location.href='geldKeuze';" class="button" id="terug">terug</button>
             </div>
 
@@ -74,6 +74,11 @@ const char biljetVraag_html[] PROGMEM = R"rawliteral(
         document.getElementById('bevestig_afbreken').addEventListener('click', () => {
             websocket.send("break");
             window.location.href = '/';
+        });
+
+        document.getElementById('biljetNee').addEventListener('click', () => {
+            websocket.send("biljetNee");
+            window.location.href = 'bonVraag';
         });
     </script>
 

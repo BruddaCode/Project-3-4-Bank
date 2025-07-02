@@ -427,15 +427,15 @@ void rammelGeldUitAutomaat() {
       dispenser.phase = PULLING;
       pull(dispenser.currentChannel);
     } else {
-      push(dispenser.currentChannel); // Optional repeated call if needed
+      push(dispenser.currentChannel);
     }
 
   } else if (dispenser.phase == PULLING) {
     if (now - dispenser.phaseStart >= 1000) {
-      dispenser.phase = IDLE; // Ready for next bill
-      stop(dispenser.currentChannel);  // ✅ Stop motor after pull
+      dispenser.phase = IDLE;
+      stop(dispenser.currentChannel);
     } else {
-      pull(dispenser.currentChannel); // Optional repeated call
+      pull(dispenser.currentChannel);
     }
   }
 }
@@ -447,6 +447,13 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     String msg = "";
     for (size_t i = 0; i < len; i++) {
       msg += (char) data[i];
+    }
+    if (msg == "biljetNee") {
+      int code = callApi("withdraw", iban, pasnummer, pin, String(amount));
+      if (code != 409) {
+        Serial.println("Starting dispenser for optie1 with amount: " + String(amount));
+        startDispenser("optie1");
+      }
     }
     if (msg == "getSaldo") {
       notifyClients("saldo:" + String(saldo, 2)); // Notify clients with the current saldo
